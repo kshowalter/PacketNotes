@@ -24,6 +24,12 @@ export default {
       words: ['this','is','also','#test', '#second_chance'],
       tags: ['#test', '#second_chance']
 
+    },
+    {
+      text: 'this is note a test',
+      words: ['this','is','note','a','test'],
+      tags: []
+
     }
 
 

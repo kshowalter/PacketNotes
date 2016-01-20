@@ -100,9 +100,10 @@ var Notes = React.createClass({
     var actions = this.props.actions;
     return (
       <div className='Notes'>
-        {this.props.notes.map(function(note,id) {
+        {this.props.displayedNotes.map(function(noteId,id) {
+          var note = this.props.notes[noteId];
           return <Note note={note} key={id} actions={actions}/>;
-        })}
+        },this)}
       </div>
     );
   }
@@ -137,7 +138,7 @@ var ReactView = React.createClass({
       <div>
         <StatusBar updateTime={this.props.updateTime} count={this.props.count} trigger={this.test} />
         <SearchBar searchParams={this.props.searchParams} actions={actions} />
-        <Notes notes={this.props.notes} actions={actions} />
+        <Notes notes={this.props.notes} displayedNotes={this.props.displayedNotes} actions={actions} />
       </div>
     );
   }

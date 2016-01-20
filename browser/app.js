@@ -36,7 +36,8 @@ import ReactView from './components/view.js';
 import reducer from './redux/reducer.js';
 
 import {
-  test
+  test,
+  initialize
 } from './redux/actions';
 
 
@@ -71,4 +72,5 @@ ReactDOM.render(
   document.getElementById('content')
 );
 
+store.dispatch(initialize());
 store.dispatch(test());

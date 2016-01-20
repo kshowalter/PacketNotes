@@ -45,7 +45,7 @@ var selectTag = function(state,action){
 
   var searchParams = Object.assign({},state,{
     tags: tags,
-    searchWords: _.concat( state.textWords, tags )
+    searchWords: state.textWords.concat( tags )
   });
   return searchParams;
 };
@@ -56,26 +56,34 @@ var updateSearchString = function(state,action){
   var searchParams = Object.assign({},state,{
     searchString: searchString,
     textWords: searchString.split(' '),
-    searchWords: _.concat( searchString.split(' '), state.searchParams.tags )
+    searchWords: state.searchParams.tags.concat( searchString.split(' ') )
   });
   return searchParams;
 };
 
 var updateDisplayedNotes = function(state,action){
-  var displayedNotes = [];
-
-  state.notes.forEach(function(note,id){
-    var matches = _.intersection( note.words, state.searchParams.tags  );
-    if( matches.length ){
-      displayedNotes.push(id);
-    }
-  });
-
-
-
+  if( state.searchParams.searchWords.length ){
+    var displayedNotes = [];
+    state.notes.forEach(function(note,id){
+      var matches = _.intersection( note.words, state.searchParams.tags  );
+      if( matches.length ){
+        displayedNotes.push(id);
+      }
+    });
+  } else {
+    displayedNotes = _.keys(state.notes);
+  }
   return displayedNotes;
 };
 
+//var initialize = function(state,action){
+//  state = Object.assign({}, state, {
+//    displayedNotes: updateDisplayedNotes(state, action)
+//  });
+//
+//
+//  return state;
+//};
 
 function reducer( state={}, action ){
   //console.log('Action: ', action);

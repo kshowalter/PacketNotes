@@ -2,6 +2,7 @@ export const TEST = 'TEST';
 export const ADD_ITEM = 'ADD_ITEM';
 export const SELECT_TAG = 'SELECT_TAG';
 export const UPDATE_SEARCH_STRING = 'UPDATE_SEARCH_STRING';
+export const INITIALIZE = 'INITIALIZE';
 
 
 export function addItem(text,parentID){
@@ -29,5 +30,10 @@ export function updateSearchString(searchString){
   return {
     type: UPDATE_SEARCH_STRING,
     searchString: searchString
+  };
+}
+export function initialize(){
+  return {
+    type: INITIALIZE
   };
 }
