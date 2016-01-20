@@ -5,7 +5,7 @@
   "description": "Tag based information organizer",
   "dependencies": {
     "seedrandom": "latest",
-    "lodash": "latest",
+    "lodash": "3.10.1",
     "jquery": "latest",
     "moment": "latest",
     "math": "latest",
