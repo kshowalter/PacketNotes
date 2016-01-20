@@ -89,6 +89,15 @@ h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
   border: 1px solid lightgrey;
 }
 
+.NewNote {
+  padding: 2px;
+  background: WhiteSmoke;
+  width: 400px;
+  margin: 5px;
+  display: block;
+  border: 1px solid lightgrey;
+}
+
 
 .Button {
   padding: 2px;

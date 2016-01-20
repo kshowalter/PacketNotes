@@ -109,6 +109,15 @@ var Notes = React.createClass({
   }
 });
 
+var NewNote = React.createClass({
+  render: function(){
+    return (
+      <div className='NewNote'>
+        <input type='textbox'></input>
+      </div>
+    );
+  }
+});
 
 var ReactView = React.createClass({
   test: function(input){
@@ -138,6 +147,7 @@ var ReactView = React.createClass({
       <div>
         <StatusBar updateTime={this.props.updateTime} count={this.props.count} trigger={this.test} />
         <SearchBar searchParams={this.props.searchParams} actions={actions} />
+        <NewNote actions={actions} />
         <Notes notes={this.props.notes} displayedNotes={this.props.displayedNotes} actions={actions} />
       </div>
     );
