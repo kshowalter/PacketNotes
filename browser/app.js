@@ -36,7 +36,7 @@ import ReactView from './components/view.js';
 import reducer from './redux/reducer.js';
 
 import {
-  tick
+  test
 } from './redux/actions';
 
 
@@ -59,16 +59,16 @@ var select = function(state) {
   return state;
 };
 
-var App = connect(select)(ReactView);
+var View = connect(select)(ReactView);
 
 ReactDOM.render(
   <Provider store={store}>
     <div>
-      <App />
+      <View />
       <DevTools />
     </div>
   </Provider>,
   document.getElementById('content')
 );
 
-store.dispatch(tick());
+store.dispatch(test());

@@ -1,46 +1,33 @@
 //module.exports = {
 export default {
-  //test: false,
-  count: 1,
-  UI: {
-    selectedShip: 0,
-    time: {
-      day: 0,
-      hour: 0,
-      minute: 0,
-      tick: 0
-    },
-    count: 1,
-    display: {
-      title: '',
-      subComponents: []
-    }
+  count: 0,
+  updateTime: '0000-00-00 00:00:00',
+  selectedTags: [],
+
+  searchParams: {
+    text: [],
+    textWords: [],
+    searchString: '',
+    tags: [],
+    searchWords: []
   },
-  universe: {
-    time: {
-      day: 0,
-      hour: 0,
-      minute: 0,
-      tick: 0
+
+  notes: [
+    {
+      text: 'this is a #test',
+      words: ['this','is','a','#test'],
+      tags: ['#test']
+
     },
-    shipsInSystem: [
-      {
-        name: 'KIT Explorer',
-        class: 'Explorer',
-        subComponents: {
-          generator: {
-            type: 'power',
-            status: 'off',
-            power_output: 10000
-          },
-          engine: {
-            type: 'engine',
-            status: 'off',
-            power_max: 10000
-          }
-        }
-      }
-    ]
-  }
+    {
+      text: 'this is also #test #second_chance',
+      words: ['this','is','also','#test', '#second_chance'],
+      tags: ['#test', '#second_chance']
+
+    }
+
+
+  ],
+  displayedNotes: []
 
 };

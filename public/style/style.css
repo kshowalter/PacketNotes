@@ -51,7 +51,15 @@ h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
 
 
 
-.Display {
+.App {
+
+}
+
+.Notes {
+
+}
+
+.Note {
   padding: 2px;
   background: WhiteSmoke;
   width: 400px;
@@ -60,14 +68,6 @@ h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
   border: 1px solid lightgrey;
 }
 
-.TitleBar {
-  font-weight: bold;
-  background: #bbc3e4;
-  color: #424242;
-  border: 1px solid grey;
-  padding: 0px;
-  padding-left: 6px;
-}
 
 .StatusBar {
   width: 100%;
@@ -80,9 +80,13 @@ h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
   margin-bottom: 6px;
 }
 
-.title_bar_text {
-  font-weight: bold;
-  color: #424242;
+.SearchBar {
+  padding: 2px;
+  background: WhiteSmoke;
+  width: 400px;
+  margin: 5px;
+  display: block;
+  border: 1px solid lightgrey;
 }
 
 
@@ -96,13 +100,4 @@ h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
 
 .Button_right {
 
-}
-
-.Component{
-  display: block;
-}
-
-
-.dropList {
-	margin: 4px;
 }
