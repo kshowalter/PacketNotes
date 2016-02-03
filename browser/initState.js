@@ -12,6 +12,15 @@ export default {
     searchWords: []
   },
 
+  tags: {
+    '#test': {
+      selected: false
+    },
+    '#second_chance': {
+      selected: true
+    }
+  },
+
   notes: [
     {
       text: 'this is a #test',

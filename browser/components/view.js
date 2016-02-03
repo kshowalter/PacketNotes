@@ -21,44 +21,37 @@ var Button = React.createClass({
   },
   render: function(){
     return (
-      <span className='Button' onClick={this.click}>{this.props.name}</span>
+      <span onClick={this.click}>{this.props.name}</span>
     );
   }
 });
 
-var SearchBar = React.createClass({
+var TopBar = React.createClass({
   selectTag: function(tag){
     console.log(this.props);
     this.props.actions.selectTag(tag);
   },
   render: function(){
     return (
-      <div className='SearchBar'>
+      <div className='TopBar'>
         <input type='text'></input>
         <span>
           {this.props.searchParams.tags.map(function(tag, id){
-            return <Button key={id} name={tag} cb={this.selectTag} />;
+            return <Button className='tagButton' key={id} name={tag} cb={this.selectTag} />;
           }, this)}
+        </span>
+        <span className='TopBarRight'>
+          &nbsp;&nbsp;
+          &nbsp;&nbsp;
+          {this.props.updateTime}
+          &nbsp;&nbsp;
+          {this.props.count}
         </span>
       </div>
     );
   }
 });
 
-
-var StatusBar = React.createClass({
-  render: function(){
-    return (
-      <div className="StatusBar">
-        {this.props.updateTime}
-        &nbsp;&nbsp;
-        {this.props.count}
-        &nbsp;&nbsp;
-        <Button name="test" cb={this.props.trigger} />
-      </div>
-    );
-  }
-});
 
 var Note = React.createClass({
   selectTag: function(e){
@@ -119,6 +112,36 @@ var NewNote = React.createClass({
   }
 });
 
+var TagSideBar = React.createClass({
+  selectTag: function(tag){
+    console.log(this.props);
+    this.props.actions.selectTag(tag);
+  },
+  render: function(){
+    return (
+      <div className='TagSideBar'>
+        <ul>
+          { _.keys(this.props.tags).map(function(tagName,id){
+            if(this.props.tags[tagName].selected){
+              return (
+                <li>
+                  <Button className='tagButtonSelected' key={id} name={tagName} cb={this.selectTag} />
+                </li>
+              );
+            } else {
+              return (
+                <li>
+                  <Button className='tagButton' key={id} name={tagName} cb={this.selectTag} />
+                </li>
+              );
+            }
+          },this)}
+        </ul>
+      </div>
+    );
+  }
+});
+
 var ReactView = React.createClass({
   test: function(input){
     console.log('test');
@@ -144,11 +167,20 @@ var ReactView = React.createClass({
       }
     };
     return (
-      <div>
-        <StatusBar updateTime={this.props.updateTime} count={this.props.count} trigger={this.test} />
-        <SearchBar searchParams={this.props.searchParams} actions={actions} />
-        <NewNote actions={actions} />
-        <Notes notes={this.props.notes} displayedNotes={this.props.displayedNotes} actions={actions} />
+      <div className='App'>
+        <TopBar
+          searchParams={this.props.searchParams}
+          actions={actions}
+          updateTime={this.props.updateTime}
+          count={this.props.count}
+          />
+        <div className='mainSection'>
+          <TagSideBar tags={this.props.tags} actions={actions} />
+          <div className='flexSection'>
+            <NewNote actions={actions} />
+            <Notes notes={this.props.notes} displayedNotes={this.props.displayedNotes} actions={actions} />
+          </div>
+        </div>
       </div>
     );
   }
