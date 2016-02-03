@@ -2,29 +2,30 @@ body {
   color: black;
   font-family:Monospace;
   font-size:13px;
-
   /*
   font-family: 'Roboto', sans-serif;
   font-family: 'Open Sans', sans-serif;
   background: #DFDFDF;
+  background: #fceaca;
   */
   font-family: sans-serif;
-
-  background: whitesmoke;
-
   padding: 0px;
+  margin: 0px;
+
+
 }
 
-
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0px;
+}
 
 a {
   text-decoration: none;
   color: inherit;
-
 }
-
-
-
 
 table {
   border: 1px black solid;
@@ -32,15 +33,12 @@ table {
   border-spacing: 0;
 }
 table, tr, td, th, tbody, thead{vertical-align:baseline}
-
 th, td {
   border: 1px black solid;
   text-align: left;
   padding: 2px;
   white-space: nowrap;
 }
-
-
 
 /*
 http://stackoverflow.com/questions/4918018/eliminate-padding-margin-around-pics-in-td-elements
@@ -49,11 +47,84 @@ Finally, I add this line, which removes that stupid spacing which appears all th
 h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
 
 
+.DevTools {
+  margin-top: 30px;
 
+
+}
 
 .App {
 
 }
+
+.TopBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #473108;
+  color: #fceaca;
+  padding: 2px;
+  height: 25px;
+}
+
+.TopBarRight {
+
+
+}
+
+/*
+overflow: hidden;
+*/
+
+
+.mainSection {
+  /*
+  */
+  margin-top: 25px;
+
+}
+
+.TagSideBar {
+  position: fixed;
+  padding: 2px;
+  background-color: #d1ba90;
+  margin-bottom: -5000px;
+  padding-bottom: 5000px;
+  width: 200px;
+  
+}
+
+.TagSideBar ul {
+  padding: 0px;
+  list-style-type: none;
+
+}
+
+.tagButton {
+  margin: 2px;
+  padding: 2px;
+  background-color: #baae99;
+  border: 1px solid black;
+}
+.tagButtonSelected {
+  margin: 2px;
+  padding: 2px;
+  background-color: #be9f68;
+  border: 1px solid pink;
+}
+
+
+
+
+.flexSection {
+  margin-left: 200px;
+  background-color: #fceaca;
+  padding: 3px;
+
+
+}
+
 
 .Notes {
 
@@ -69,25 +140,6 @@ h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
 }
 
 
-.StatusBar {
-  width: 100%;
-  height: 20px;
-  font-weight: bold;
-  background: #4e4e4e;
-  color: WhiteSmoke;
-  border: 1px solid grey;
-  margin: 0px;
-  margin-bottom: 6px;
-}
-
-.SearchBar {
-  padding: 2px;
-  background: WhiteSmoke;
-  width: 400px;
-  margin: 5px;
-  display: block;
-  border: 1px solid lightgrey;
-}
 
 .NewNote {
   padding: 2px;
@@ -99,7 +151,7 @@ h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
 }
 
 
-.Button {
+.button {
   padding: 2px;
   margin: 3px;
   background-color: #567df0;
