@@ -73,6 +73,10 @@ h1, h2, h3, h4, h5, h6, th, td, caption { font-weight:normal; }
 
 }
 
+input[type=text] {
+  color: black;
+}
+
 /*
 overflow: hidden;
 */
@@ -92,7 +96,7 @@ overflow: hidden;
   margin-bottom: -5000px;
   padding-bottom: 5000px;
   width: 200px;
-  
+
 }
 
 .TagSideBar ul {

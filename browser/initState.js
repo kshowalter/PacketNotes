@@ -2,23 +2,19 @@
 export default {
   count: 0,
   updateTime: '0000-00-00 00:00:00',
-  selectedTags: [],
 
-  searchParams: {
-    text: [],
-    textWords: [],
-    searchString: '',
-    tags: [],
-    searchWords: []
-  },
-
-  tags: {
-    '#test': {
-      selected: false
+  filter: {
+    tags: {
+      '#test': {
+        selected: false
+      },
+      '#second_chance': {
+        selected: true
+      }
     },
-    '#second_chance': {
-      selected: true
-    }
+    selectedTags: [],
+    searchString: '',
+    searchWords: []
   },
 
   notes: [

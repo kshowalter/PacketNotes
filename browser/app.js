@@ -7,8 +7,6 @@ import { connect, Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import * as ReactDOM from 'react-dom';
 
-import DevTools from './redux/DevTools';
-
 //import Immutable from 'immutable';
 
 window.global = window;
@@ -64,10 +62,7 @@ var View = connect(select)(ReactView);
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>
-      <View />
-      <DevTools />
-    </div>
+    <View />
   </Provider>,
   document.getElementById('content')
 );

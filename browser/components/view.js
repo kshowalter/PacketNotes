@@ -27,19 +27,15 @@ var Button = React.createClass({
 });
 
 var TopBar = React.createClass({
-  selectTag: function(tag){
-    console.log(this.props);
-    this.props.actions.selectTag(tag);
+  updateSearchString: function(e){
+    console.log(e, e.target.value);
+    var searchString = e.target.value;
+    this.props.actions.updateSearchString(searchString);
   },
   render: function(){
     return (
       <div className='TopBar'>
-        <input type='text'></input>
-        <span>
-          {this.props.searchParams.tags.map(function(tag, id){
-            return <Button className='tagButton' key={id} name={tag} cb={this.selectTag} />;
-          }, this)}
-        </span>
+        <input type='text' value={this.props.searchString} onInput={this.updateSearchString}></input>
         <span className='TopBarRight'>
           &nbsp;&nbsp;
           &nbsp;&nbsp;
@@ -106,7 +102,7 @@ var NewNote = React.createClass({
   render: function(){
     return (
       <div className='NewNote'>
-        <input type='textbox'></input>
+        <input type='text'></input>
       </div>
     );
   }
@@ -122,16 +118,17 @@ var TagSideBar = React.createClass({
       <div className='TagSideBar'>
         <ul>
           { _.keys(this.props.tags).map(function(tagName,id){
+            console.log(this.props.tags[tagName].selected);
             if(this.props.tags[tagName].selected){
               return (
-                <li>
-                  <Button className='tagButtonSelected' key={id} name={tagName} cb={this.selectTag} />
+                <li key={id} className='tagButtonSelected'>
+                  <Button name={tagName} cb={this.selectTag} />
                 </li>
               );
             } else {
               return (
-                <li>
-                  <Button className='tagButton' key={id} name={tagName} cb={this.selectTag} />
+                <li key={id} className='tagButton'>
+                  <Button name={tagName} cb={this.selectTag} />
                 </li>
               );
             }
@@ -169,13 +166,13 @@ var ReactView = React.createClass({
     return (
       <div className='App'>
         <TopBar
-          searchParams={this.props.searchParams}
+          searchString={this.props.filter.searchString}
           actions={actions}
           updateTime={this.props.updateTime}
           count={this.props.count}
           />
         <div className='mainSection'>
-          <TagSideBar tags={this.props.tags} actions={actions} />
+          <TagSideBar tags={this.props.filter.tags} actions={actions} />
           <div className='flexSection'>
             <NewNote actions={actions} />
             <Notes notes={this.props.notes} displayedNotes={this.props.displayedNotes} actions={actions} />

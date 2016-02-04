@@ -14,9 +14,14 @@ const createStoreWithMiddleware = compose(
     loggerMiddleware // neat middleware that logs actions
   ),
   // Required! Enable Redux DevTools with the monitors you chose
-  DevTools.instrument()
+  //DevTools.instrument()
   // Optional. Lets you write ?debug_session=<key> in address bar to persist debug sessions
   //persistState(getDebugSessionKey())
+
+  //typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+
+  window.devToolsExtension ? window.devToolsExtension() : f => f
+
 )(createStore);
 
 

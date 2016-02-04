@@ -34,7 +34,16 @@ var addItem = function(state,action){
 
 
 var selectTag = function(state,action){
+  var tags = Object.assign({},state);
+
+  tags[action.tag].selected = ! tags[action.tag].selected;
+
+  return tags;
+};
+
+var selectTag = function(state,action){
   var tags = [...state.tags];
+
   var tagIndex = tags.indexOf(action.tag);
 
   if( tagIndex+1 ){
@@ -61,11 +70,44 @@ var updateSearchString = function(state,action){
   return searchParams;
 };
 
+var updateFilter = function(state,action){
+  switch (action.type) {
+  case SELECT_TAG:
+    state.tags = Object.assign({}, state.tags);
+    state.tags[action.tag].selected = ! state.tags[action.tag].selected;
+    break;
+  case UPDATE_SEARCH_STRING:
+    state = Object.assign({}, state, {
+      searchString: action.searchString
+    });
+    break;
+  default:
+  }
+
+  var selectedTags = [];
+
+  for(var tagName in state.tags ){
+    if( state.tags[tagName].selected ){
+      selectedTags.push(tagName);
+    }
+  }
+
+  var searchWords = [].concat( selectedTags, state.searchString.split(' ') );
+
+  state = Object.assign({}, state, {
+    searchWords: searchWords,
+    selectedTags: selectedTags
+  });
+
+  return state;
+};
+
+
 var updateDisplayedNotes = function(state,action){
-  if( state.searchParams.searchWords.length ){
+  if( state.filter.searchWords.length ){
     var displayedNotes = [];
     state.notes.forEach(function(note,id){
-      var matches = _.intersection( note.words, state.searchParams.tags  );
+      var matches = _.intersection( note.words, state.filter.searchWords );
       if( matches.length ){
         displayedNotes.push(id);
       }
@@ -96,22 +138,18 @@ function reducer( state={}, action ){
     return state;
   }
 
-
-
-  if( action.type === ADD_ITEM ){
+  switch(action.type){
+  case ADD_ITEM:
     state = Object.assign({}, state, {
       notes: addItem(state.notes, action)
     });
-  }
-  if( action.type === SELECT_TAG ){
+    break;
+  case SELECT_TAG:
+  case UPDATE_SEARCH_STRING:
     state = Object.assign({}, state, {
-      searchParams: selectTag(state.searchParams, action)
+      filter: updateFilter(state.filter, action)
     });
-  }
-  if( action.type === UPDATE_SEARCH_STRING ){
-    state = Object.assign({}, state, {
-      searchParams: updateSearchString(state.searchParams, action)
-    });
+    break;
   }
 
   state = Object.assign({}, state, {
