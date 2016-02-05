@@ -35,7 +35,8 @@ import reducer from './redux/reducer.js';
 
 import {
   test,
-  initialize
+  initialize,
+  addNote
 } from './redux/actions';
 
 
@@ -69,3 +70,16 @@ ReactDOM.render(
 
 store.dispatch(initialize());
 store.dispatch(test());
+
+document.onkeypress = function (e) {
+  e = e || window.event;
+  // use e.keyCode
+  console.log('key', e.code);
+  if( e.code == 'Enter'){
+    var newNote = document.getElementById('noteInput').value;
+    store.dispatch(addNote(newNote));
+
+    document.getElementById('noteInput').value = '';
+  }
+  document.getElementById('noteInput').focus();
+};
