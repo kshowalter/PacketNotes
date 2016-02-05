@@ -1,13 +1,13 @@
 export const TEST = 'TEST';
-export const ADD_ITEM = 'ADD_ITEM';
+export const ADD_NOTE = 'ADD_NOTE';
 export const SELECT_TAG = 'SELECT_TAG';
 export const UPDATE_SEARCH_STRING = 'UPDATE_SEARCH_STRING';
 export const INITIALIZE = 'INITIALIZE';
 
 
-export function addItem(text,parentID){
+export function addNote(text,parentID){
   return {
-    type: ADD_ITEM,
+    type: ADD_NOTE,
     text: text,
     parentID: parentID
   };

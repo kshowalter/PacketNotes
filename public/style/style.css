@@ -135,7 +135,6 @@ overflow: hidden;
 .Note {
   padding: 2px;
   background: WhiteSmoke;
-  width: 400px;
   margin: 5px;
   display: block;
   border: 1px solid lightgrey;
@@ -143,23 +142,23 @@ overflow: hidden;
 
 
 
-.NewNote {
+.AddNoteBar {
   padding: 2px;
   background: WhiteSmoke;
-  width: 400px;
   margin: 5px;
   display: block;
   border: 1px solid lightgrey;
 }
 
 
-.button {
-  padding: 2px;
-  margin: 3px;
-  background-color: #567df0;
-  color: #d4f4e1;
-  border: 1px solid black;
+.button{
+  padding: 2px 5px;
+  margin: 2px;
+  background-color: #b7d8f4;
+  border: 1px solid #909090;
+  color: black;
 }
+
 
 .Button_right {
 

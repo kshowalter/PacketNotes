@@ -6,15 +6,15 @@ export default {
   filter: {
     tags: {
       '#test': {
-        selected: false
+        selected: true
       },
       '#second_chance': {
-        selected: true
+        selected: false
       }
     },
-    selectedTags: [],
+    selectedTags: ['#test'],
     searchString: '',
-    searchWords: []
+    searchWords: ['#test']
   },
 
   notes: [

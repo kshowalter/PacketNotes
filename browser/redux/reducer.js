@@ -3,32 +3,35 @@ import moment from 'moment';
 import _ from 'lodash';
 
 import {
-  ADD_ITEM,
+  ADD_NOTE,
   SELECT_TAG,
   UPDATE_SEARCH_STRING
 } from './actions';
 
 var tagMarkers = ['#','@'];
 
-var addItem = function(state,action){
+var addNote = function(state,action){
+
   var newNote = {
     text: action.text,
-    words: action.text.split(),
+    words: action.text.split(' '),
     tags: [],
     status: 'active'
   };
+
+  console.log(newNote);
+
+  var notes = [...state, newNote];
+  
+  /*
   newNote.words.forEach(function(word){
     if( tagMarkers.indexOf(word[0])+1 ){
       newNote.tags.push(word);
     }
   });
 
-  return Object.assign({}, state, {
-    notes: [
-      ...state.notes,
-      newNote
-    ]
-  });
+  */
+  return notes;
 
 };
 
@@ -94,6 +97,10 @@ var updateFilter = function(state,action){
 
   var searchWords = [].concat( selectedTags, state.searchString.split(' ') );
 
+  searchWords = _.filter(searchWords, function(word){
+    return word !== '';
+  });
+
   state = Object.assign({}, state, {
     searchWords: searchWords,
     selectedTags: selectedTags
@@ -139,9 +146,9 @@ function reducer( state={}, action ){
   }
 
   switch(action.type){
-  case ADD_ITEM:
+  case ADD_NOTE:
     state = Object.assign({}, state, {
-      notes: addItem(state.notes, action)
+      notes: addNote(state.notes, action)
     });
     break;
   case SELECT_TAG:

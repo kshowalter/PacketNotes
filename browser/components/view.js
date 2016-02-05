@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 import {
   test,
-  addItem,
+  addNote,
   selectTag,
   updateSearchString
 } from '../redux/actions.js';
@@ -15,13 +15,26 @@ import {
 
 
 var Button = React.createClass({
+  render: function(){
+    console.log(this.props);
+    return (
+      <span className={this.props.buttonClass} onClick={this.props.cb}>
+        {this.props.children}
+      </span>
+    );
+  }
+});
+
+var ButtonLi = React.createClass({
   click: function(e){
     //console.log(this.props.name);
     this.props.cb(this.props.name);
   },
   render: function(){
     return (
-      <span onClick={this.click}>{this.props.name}</span>
+      <li className={this.props.buttonClass} onClick={this.click}>
+        {this.props.name}
+      </li>
     );
   }
 });
@@ -98,19 +111,32 @@ var Notes = React.createClass({
   }
 });
 
-var NewNote = React.createClass({
+var AddNoteBar = React.createClass({
+  addNote: function(e){
+    var newNote = document.getElementById('noteInput').value;
+    document.getElementById('noteInput').value = '';
+    console.log(newNote);
+    if( newNote !== '' ){
+      this.props.actions.addNote(newNote);
+    }
+  },
   render: function(){
     return (
-      <div className='NewNote'>
-        <input type='text'></input>
+      <div className='AddNoteBar'>
+        <input type='text' id='noteInput'></input>
+        <Button buttonClass='button' cb={this.addNote}>
+          <i className='fa fa-plus'></i>
+        </Button>
       </div>
     );
   }
 });
 
+
+
 var TagSideBar = React.createClass({
   selectTag: function(tag){
-    console.log(this.props);
+    console.log(this.props, tag);
     this.props.actions.selectTag(tag);
   },
   render: function(){
@@ -119,19 +145,13 @@ var TagSideBar = React.createClass({
         <ul>
           { _.keys(this.props.tags).map(function(tagName,id){
             console.log(this.props.tags[tagName].selected);
+            var tagClass = 'tagButton';
             if(this.props.tags[tagName].selected){
-              return (
-                <li key={id} className='tagButtonSelected'>
-                  <Button name={tagName} cb={this.selectTag} />
-                </li>
-              );
-            } else {
-              return (
-                <li key={id} className='tagButton'>
-                  <Button name={tagName} cb={this.selectTag} />
-                </li>
-              );
+              tagClass = 'tagButtonSelected';
             }
+            return (
+              <ButtonLi key={id} buttonClass={tagClass} name={tagName} cb={this.selectTag} />
+            );
           },this)}
         </ul>
       </div>
@@ -153,8 +173,8 @@ var ReactView = React.createClass({
     //const time = this.props.time;
     //var dispatch = this.props.dispatch;
     var actions = {
-      addItem: function(text){
-        dispatch(addItem(text));
+      addNote: function(text){
+        dispatch(addNote(text));
       },
       selectTag: function(tag){
         dispatch(selectTag(tag));
@@ -174,7 +194,7 @@ var ReactView = React.createClass({
         <div className='mainSection'>
           <TagSideBar tags={this.props.filter.tags} actions={actions} />
           <div className='flexSection'>
-            <NewNote actions={actions} />
+            <AddNoteBar actions={actions} />
             <Notes notes={this.props.notes} displayedNotes={this.props.displayedNotes} actions={actions} />
           </div>
         </div>
