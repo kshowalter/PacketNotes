@@ -11,6 +11,7 @@
     "math": "latest",
     "react": "latest",
     "react-dom": "latest",
+    "freezer-js": "latest",
     "redux": "latest",
     "react-redux": "latest",
     "redux-thunk": "latest",

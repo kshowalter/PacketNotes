@@ -55,6 +55,9 @@ import initState from './initState';
 //var initStateImmutable = Immutable.fromJS(initState);
 //let store = configureStore(initStateImmutable);
 
+var Freezer = require('freezer-js');
+var freezer = new Freezer(initState);
+
 let store = configureStore(initState);
 
 
