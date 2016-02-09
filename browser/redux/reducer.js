@@ -11,27 +11,47 @@ import {
 var tagMarkers = ['#','@'];
 
 var addNote = function(state,action){
+  var id = ++state.LastNoteId;
 
   var newNote = {
+    id: id,
     text: action.text,
     words: action.text.split(' '),
     tags: [],
     status: 'active'
   };
 
-  console.log(newNote);
-
-  var notes = [...state, newNote];
-  
-  /*
   newNote.words.forEach(function(word){
     if( tagMarkers.indexOf(word[0])+1 ){
       newNote.tags.push(word);
+      if( ! state.filter.tags[word] ){
+        state.filter.tags = Object.assign({}, state.filter.tags, {
+          [word]: {selected: false}
+        });
+      }
     }
   });
 
-  */
-  return notes;
+  var words = [...state.words];
+
+  newNote.words.forEach(function(word){
+    if( ! words[word] ){
+      words[word] = [id];
+    } else {
+      words[word].push(id);
+    }
+  });
+
+
+
+
+  var newState = {
+    notes: [...state.notes, newNote],
+    words: words
+  };
+
+
+  return newState;
 
 };
 
@@ -147,9 +167,7 @@ function reducer( state={}, action ){
 
   switch(action.type){
   case ADD_NOTE:
-    state = Object.assign({}, state, {
-      notes: addNote(state.notes, action)
-    });
+    state = Object.assign({}, state, addNote(state, action) );
     break;
   case SELECT_TAG:
   case UPDATE_SEARCH_STRING:

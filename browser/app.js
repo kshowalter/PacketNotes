@@ -46,6 +46,9 @@ import {
 //)(createStore);
 
 
+
+
+
 import configureStore from './redux/configureStore';
 
 import initState from './initState';
@@ -69,7 +72,10 @@ ReactDOM.render(
 );
 
 store.dispatch(initialize());
-store.dispatch(test());
+
+store.dispatch( addNote('this is a #test') );
+store.dispatch( addNote('this is also #test #second_chance') );
+store.dispatch( addNote('this is note a test') );
 
 document.onkeypress = function (e) {
   e = e || window.event;
