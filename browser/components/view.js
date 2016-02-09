@@ -16,7 +16,7 @@ import {
 
 var Button = React.createClass({
   render: function(){
-    console.log(this.props);
+    //console.log(this.props);
     return (
       <span className={this.props.buttonClass} onClick={this.props.cb}>
         {this.props.children}
@@ -136,7 +136,7 @@ var AddNoteBar = React.createClass({
 
 var TagSideBar = React.createClass({
   selectTag: function(tag){
-    console.log(this.props, tag);
+    //console.log(this.props, tag);
     this.props.actions.selectTag(tag);
   },
   render: function(){
@@ -144,7 +144,6 @@ var TagSideBar = React.createClass({
       <div className='TagSideBar'>
         <ul>
           { _.keys(this.props.tags).map(function(tagName,id){
-            console.log(this.props.tags[tagName].selected);
             var tagClass = 'tagButton';
             if(this.props.tags[tagName].selected){
               tagClass = 'tagButtonSelected';
