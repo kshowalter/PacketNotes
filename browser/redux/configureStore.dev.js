@@ -5,13 +5,13 @@ import DevTools from './DevTools';
 
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
-const loggerMiddleware = createLogger();
+//const loggerMiddleware = createLogger();
 
 const createStoreWithMiddleware = compose(
   // Middleware you want to use in development:
   applyMiddleware(
-    thunkMiddleware, // lets us dispatch() functions
-    loggerMiddleware // neat middleware that logs actions
+    thunkMiddleware // lets us dispatch() functions
+    //loggerMiddleware // neat middleware that logs actions
   ),
   // Required! Enable Redux DevTools with the monitors you chose
   //DevTools.instrument()
