@@ -6,7 +6,7 @@
   "dependencies": {
     "seedrandom": "latest",
     "lodash": "3.10.1",
-    "jquery": "latest",
+    "npm-zepto": "latest",
     "moment": "latest",
     "math": "latest",
     "react": "latest",
