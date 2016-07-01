@@ -3,6 +3,10 @@
   "version": "",
   "author": "Keith Showalter",
   "description": "Tag based information organizer",
+  "scripts": {
+    "serve": "webpack-dev-server --content-base public/ --inline --hot -d",
+    "server": "DEBUG=datastorage nodemon server.js"
+  },
   "dependencies": {
     "seedrandom": "latest",
     "lodash": "3.10.1",
