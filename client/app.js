@@ -30,7 +30,7 @@ socket.on('connect', function(){
 });
 
 
-import ReactView from './components/view.js';
+import ReactView from './components/viewReact.js';
 import reducer from './redux/reducer.js';
 
 import {
@@ -83,12 +83,25 @@ store.dispatch( addNote('this is note a test') );
 document.onkeypress = function (e) {
   e = e || window.event;
   // use e.keyCode
-  console.log('key', e.code);
+  //console.log(e, 'key', e.code);
   if( e.code == 'Enter'){
     var newNote = document.getElementById('noteInput').value;
     store.dispatch(addNote(newNote));
 
     document.getElementById('noteInput').value = '';
+    document.getElementById('noteInput').focus();
   }
-  document.getElementById('noteInput').focus();
+};
+
+document.onkeydown = function(evt) {
+  evt = evt || window.event;
+  var isEscape = false;
+  if ( 'key' in evt ) {
+    isEscape = evt.key == 'Escape';
+  } else {
+    isEscape = evt.keyCode == 27;
+  }
+  if (isEscape) {
+    document.getElementById('searchInput').focus();
+  }
 };
