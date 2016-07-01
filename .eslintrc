@@ -5,7 +5,7 @@
       2
     ],
     "quotes": [
-      2,
+      1,
       "single"
     ],
     "linebreak-style": [
@@ -25,16 +25,10 @@
   },
   "extends": "eslint:recommended",
 
-
-
   "parser": "babel-eslint",
   "globals": {
     "$": true,
     "_": true,
-    "moment": true,
-    "g": true,
-    "g": true,
-    "L": true
   }
 
 }
