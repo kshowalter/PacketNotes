@@ -18,7 +18,7 @@ var Button = React.createClass({
   render: function(){
     //console.log(this.props);
     return (
-      <span className={this.props.buttonClass} onClick={this.props.cb}>
+      <span class={this.props.buttonClass} onClick={this.props.cb}>
         {this.props.children}
       </span>
     );
@@ -32,7 +32,7 @@ var ButtonLi = React.createClass({
   },
   render: function(){
     return (
-      <li className={this.props.buttonClass} onClick={this.click}>
+      <li class={this.props.buttonClass} onClick={this.click}>
         {this.props.name}
       </li>
     );
@@ -47,9 +47,11 @@ var TopBar = React.createClass({
   },
   render: function(){
     return (
-      <div className='TopBar'>
-        <input type='text' value={this.props.searchString} onInput={this.updateSearchString}></input>
-        <span className='TopBarRight'>
+      div( {class='TopBar'}, [
+
+      ]);
+        <input id='searchInput' type='text' value={this.props.searchString} onInput={this.updateSearchString}></input>
+        <span class='TopBarRight'>
           &nbsp;&nbsp;
           &nbsp;&nbsp;
           {this.props.updateTime}
@@ -73,7 +75,9 @@ var Note = React.createClass({
   render: function(){
     //console.log(this.props);
     return (
-      <div className='Note'>
+      div( {class='Note'}, [
+
+      ]);
         {this.props.note.words.map(function(word,id){
           if( this.props.note.tags.indexOf(word)+1 ){
             return (
@@ -101,7 +105,9 @@ var Notes = React.createClass({
     //console.log(this.props);
     var actions = this.props.actions;
     return (
-      <div className='Notes'>
+      div( {class='Notes'}, [
+
+      ]);
         {this.props.displayedNotes.map(function(noteId,id) {
           var note = this.props.notes[noteId];
           return <Note note={note} key={id} actions={actions}/>;
@@ -122,10 +128,12 @@ var AddNoteBar = React.createClass({
   },
   render: function(){
     return (
-      <div className='AddNoteBar'>
+      div( {class='AddNoteBar'}, [
+
+      ]);
         <input type='text' id='noteInput'></input>
         <Button buttonClass='button' cb={this.addNote}>
-          <i className='fa fa-plus'></i>
+          <i class='fa fa-plus'></i>
         </Button>
       </div>
     );
@@ -141,7 +149,9 @@ var TagSideBar = React.createClass({
   },
   render: function(){
     return (
-      <div className='TagSideBar'>
+      div( {class='TagSideBar'}, [
+
+      ]);
         <ul>
           { _.keys(this.props.tags).map(function(tagName,id){
             var tagClass = 'tagButton';
@@ -183,16 +193,22 @@ var ReactView = React.createClass({
       }
     };
     return (
-      <div className='App'>
+      div( {class='App'}, [
+
+      ]);
         <TopBar
           searchString={this.props.filter.searchString}
           actions={actions}
           updateTime={this.props.updateTime}
           count={this.props.count}
           />
-        <div className='mainSection'>
+        div( {class='mainSection'}, [
+
+        ]);
           <TagSideBar tags={this.props.filter.tags} actions={actions} />
-          <div className='flexSection'>
+          div( {class='flexSection'}, [
+
+          ]);
             <AddNoteBar actions={actions} />
             <Notes notes={this.props.notes} displayedNotes={this.props.displayedNotes} actions={actions} />
           </div>
