@@ -1,6 +1,6 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var _ = require('lodash');
+import _ from 'lowdash';
+
+import {div, span, a, ul, li, br, h1, h2, h3} from 'specdom_helper';
 
 import {
   test,
@@ -14,7 +14,7 @@ import {
 
 
 
-var Button = React.createClass({
+var Button = function(){
   render: function(){
     //console.log(this.props);
     return (
@@ -25,7 +25,7 @@ var Button = React.createClass({
   }
 });
 
-var ButtonLi = React.createClass({
+var ButtonLi = function(){
   click: function(e){
     //console.log(this.props.name);
     this.props.cb(this.props.name);
@@ -39,7 +39,7 @@ var ButtonLi = React.createClass({
   }
 });
 
-var TopBar = React.createClass({
+var TopBar = function(){
   updateSearchString: function(e){
     console.log(e, e.target.value);
     var searchString = e.target.value;
@@ -49,7 +49,7 @@ var TopBar = React.createClass({
     return (
       div( {class='TopBar'}, [
 
-      ]);
+      ])
         <input id='searchInput' type='text' value={this.props.searchString} onInput={this.updateSearchString}></input>
         <span class='TopBarRight'>
           &nbsp;&nbsp;
@@ -58,13 +58,12 @@ var TopBar = React.createClass({
           &nbsp;&nbsp;
           {this.props.count}
         </span>
-      </div>
     );
   }
 });
 
 
-var Note = React.createClass({
+var Note = function(){
   selectTag: function(e){
     console.log(e.target.innerHTML);
     //var actions = this.props.actions;
@@ -77,7 +76,7 @@ var Note = React.createClass({
     return (
       div( {class='Note'}, [
 
-      ]);
+      ])
         {this.props.note.words.map(function(word,id){
           if( this.props.note.tags.indexOf(word)+1 ){
             return (
@@ -95,29 +94,27 @@ var Note = React.createClass({
             );
           }
         }, this)}
-      </div>
     );
   }
 });
 
-var Notes = React.createClass({
+var Notes = function(){
   render: function(){
     //console.log(this.props);
     var actions = this.props.actions;
     return (
       div( {class='Notes'}, [
 
-      ]);
+      ])
         {this.props.displayedNotes.map(function(noteId,id) {
           var note = this.props.notes[noteId];
           return <Note note={note} key={id} actions={actions}/>;
         },this)}
-      </div>
     );
   }
 });
 
-var AddNoteBar = React.createClass({
+var AddNoteBar = function(){
   addNote: function(e){
     var newNote = document.getElementById('noteInput').value;
     document.getElementById('noteInput').value = '';
@@ -130,92 +127,54 @@ var AddNoteBar = React.createClass({
     return (
       div( {class='AddNoteBar'}, [
 
-      ]);
+      ])
         <input type='text' id='noteInput'></input>
         <Button buttonClass='button' cb={this.addNote}>
           <i class='fa fa-plus'></i>
         </Button>
-      </div>
     );
   }
 });
 
 
 
-var TagSideBar = React.createClass({
-  selectTag: function(tag){
+var TagSideBar = function(){
+  var selectTag = function(tag){
     //console.log(this.props, tag);
     this.props.actions.selectTag(tag);
   },
-  render: function(){
-    return (
-      div( {class='TagSideBar'}, [
-
-      ]);
-        <ul>
-          { _.keys(this.props.tags).map(function(tagName,id){
-            var tagClass = 'tagButton';
-            if(this.props.tags[tagName].selected){
-              tagClass = 'tagButtonSelected';
-            }
-            return (
-              <ButtonLi key={id} buttonClass={tagClass} name={tagName} cb={this.selectTag} />
-            );
-          },this)}
-        </ul>
-      </div>
-    );
-  }
+  return (
+    div( {class:'TagSideBar'}, [
+      ul( _.keys(arguments.tags).map(function(tagName,id){
+          var tagClass = 'tagButton';
+          if(this.props.tags[tagName].selected){
+            tagClass = 'tagButtonSelected';
+          }
+          return (
+            <ButtonLi key={id} buttonClass={tagClass} name={tagName} cb={this.selectTag} />
+          );
+        },this)
+      ]
+    ])
+  );
 });
 
-var ReactView = React.createClass({
-  test: function(input){
-    console.log('test');
-    this.props.dispatch(test(input));
-  },
-  componentWillUpdate: function(nextProps){
-    //console.log('view will update', this.props.universe.count);
-  },
-  render: function(){
-    //console.log('view update', this.props);
-    const { dispatch } = this.props;
-    //const time = this.props.time;
-    //var dispatch = this.props.dispatch;
-    var actions = {
-      addNote: function(text){
-        dispatch(addNote(text));
-      },
-      selectTag: function(tag){
-        dispatch(selectTag(tag));
-      },
-      updateSearchString: function(searchString){
-        dispatch(updateSearchString(searchString));
-      }
-    };
-    return (
-      div( {class='App'}, [
-
-      ]);
-        <TopBar
-          searchString={this.props.filter.searchString}
-          actions={actions}
-          updateTime={this.props.updateTime}
-          count={this.props.count}
-          />
-        div( {class='mainSection'}, [
-
-        ]);
-          <TagSideBar tags={this.props.filter.tags} actions={actions} />
-          div( {class='flexSection'}, [
-
-          ]);
-            <AddNoteBar actions={actions} />
-            <Notes notes={this.props.notes} displayedNotes={this.props.displayedNotes} actions={actions} />
-          </div>
-        </div>
-      </div>
-    );
-  }
-});
+var view = function(state, actions){
+  return div( {class:'App'}, [
+    TopBar({
+      searchString: this.props.filter.searchString,
+      actions: actions,
+      updateTime: this.props.updateTime,
+      count: this.props.count
+    }),
+    div( {class:'mainSection'}, [
+      TagSideBar( {tags:this.props.filter.tags, actions:actions }),
+      div( {class:'flexSection'}, [
+        AddNoteBar({ actions:actions }),
+        Notes( {notes:this.props.notes, displayedNotes:this.props.displayedNotes, actions:actions })
+      ])
+    ])
+  ])
+};
 
 export default ReactView;

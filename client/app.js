@@ -105,3 +105,41 @@ document.onkeydown = function(evt) {
     document.getElementById('searchInput').focus();
   }
 };
+
+
+
+
+
+var redux = require('redux');
+import Router from 'hash_router';
+import SpecDOM  from 'specdom';
+
+import actionMakers from './store/actionMakers';
+import ActionDispatcher from './store/action_dispatcher';
+import initState from './store/initState';
+import reducer from './store/reducer';
+import uiMaker from './uiMaker';
+
+var store = redux.createStore(reducer, initState);
+var actionDispatcher = ActionDispatcher(store, actionMakers);
+
+window.onload = function(){
+
+  var view = SpecDOM('#content');
+
+  store.subscribe(function(){
+    var state = store.getState();
+    console.log('State change: ', state);
+
+    var uiConfig = uiMaker(state, actionDispatcher);
+    view.load( uiConfig );
+  });
+
+  actionDispatcher.selectPage(initState.defaultPage);
+
+  var router = Router(function(location){
+    actionDispatcher.selectPage(location);
+  });
+
+
+};
