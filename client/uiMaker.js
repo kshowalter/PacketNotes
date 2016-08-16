@@ -177,4 +177,4 @@ var view = function(state, actions){
   ])
 };
 
-export default ReactView;
+export default view;
