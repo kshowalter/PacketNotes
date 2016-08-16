@@ -1,27 +1,33 @@
-import 'babel-polyfill';
 import io from 'socket.io-client';
 import seedrandom  from 'seedrandom';
 
-import React from 'react';
-import { connect, Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import * as ReactDOM from 'react-dom';
+import redux from 'redux';
+import Router from 'hash_router';
+import SpecDOM  from 'specdom';
 
-//import Immutable from 'immutable';
+import ActionDispatcher from './lib/action_dispatcher';
+
+import actionMakers from './store/actionMakers';
+import initState from './store/initState';
+import reducer from './store/reducer';
+import uiMaker from './uiMaker';
+
+//import configureStore from './redux/configureStore';
+
+var store = redux.createStore(reducer, initState);
+var actionDispatcher = ActionDispatcher(store, actionMakers);
+var socket = io();
 
 window.global = window;
 window._ = require('lodash');
 window.storage = sessionStorage;
-window.g = {};
+var g = window.g = {};
 
-var socket = io();
 g.socket = socket;
 g.rand = seedrandom('bean&owl');
 g.path = __dirname;
 
-
 socket.on('connect', function(){
-  console.log('connected to server');
 
   console.log('browser says: hi');
   socket.emit('test', 'hi', function(msg){
@@ -29,56 +35,10 @@ socket.on('connect', function(){
   });
 });
 
-
-import ReactView from './components/viewReact.js';
-import reducer from './redux/reducer.js';
-
-import {
-  test,
-  initialize,
-  addNote
-} from './redux/actions';
-
-
-//const createStoreWithMiddleware = applyMiddleware(
-//  thunkMiddleware, // lets us dispatch() functions
-//  loggerMiddleware // neat middleware that logs actions
-//)(createStore);
-
-
-
-
-
-import configureStore from './redux/configureStore';
-
-import initState from './initState';
-//var initStateImmutable = Immutable.fromJS(initState);
-//let store = configureStore(initStateImmutable);
-
-var Freezer = require('freezer-js');
-var freezer = new Freezer(initState);
-
-let store = configureStore(initState);
-
-
-var select = function(state) {
-  return state;
-};
-
-var View = connect(select)(ReactView);
-
-ReactDOM.render(
-  <Provider store={store}>
-    <View />
-  </Provider>,
-  document.getElementById('content')
-);
-
-store.dispatch(initialize());
-
-store.dispatch( addNote('this is a #test') );
-store.dispatch( addNote('this is also #test #second_chance') );
-store.dispatch( addNote('this is note a test') );
+actionDispatcher.initialize();
+actionDispatcher.addNote('this is a #test');
+actionDispatcher.addNote('this is also #test #second_chance');
+actionDispatcher.addNote('this is note a test');
 
 document.onkeypress = function (e) {
   e = e || window.event;
@@ -107,22 +67,6 @@ document.onkeydown = function(evt) {
 };
 
 
-
-
-
-var redux = require('redux');
-import Router from 'hash_router';
-import SpecDOM  from 'specdom';
-
-import actionMakers from './store/actionMakers';
-import ActionDispatcher from './store/action_dispatcher';
-import initState from './store/initState';
-import reducer from './store/reducer';
-import uiMaker from './uiMaker';
-
-var store = redux.createStore(reducer, initState);
-var actionDispatcher = ActionDispatcher(store, actionMakers);
-
 window.onload = function(){
 
   var view = SpecDOM('#content');
@@ -140,6 +84,5 @@ window.onload = function(){
   var router = Router(function(location){
     actionDispatcher.selectPage(location);
   });
-
 
 };

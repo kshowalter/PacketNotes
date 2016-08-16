@@ -2,62 +2,65 @@ import _ from 'lowdash';
 
 import {div, span, a, ul, li, br, h1, h2, h3} from 'specdom_helper';
 
-import {
-  test,
-  addNote,
-  selectTag,
-  updateSearchString
-} from '../redux/actions.js';
+var Button = function(buttonClass, cb, children){
+  return span(
+    {
+      class: buttonClass,
+      onClick: cb
+    },
+    [
+      children
+    ]
+  )
+};
 
-
-/* eslint no-unused-vars: 0 */
-
-
-
-var Button = function(){
-  render: function(){
-    //console.log(this.props);
-    return (
-      <span class={this.props.buttonClass} onClick={this.props.cb}>
-        {this.props.children}
-      </span>
-    );
-  }
-});
-
-var ButtonLi = function(){
-  click: function(e){
-    //console.log(this.props.name);
-    this.props.cb(this.props.name);
-  },
-  render: function(){
-    return (
-      <li class={this.props.buttonClass} onClick={this.click}>
-        {this.props.name}
-      </li>
-    );
-  }
-});
+var ButtonLi = function(name, buttonClass){
+  return li(
+    {
+      class: buttonClass,
+      onClick: function(e){
+        this.props.cb(this.props.name);
+      }
+    },
+    [
+      name
+    ]
+  )
+};
 
 var TopBar = function(){
-  updateSearchString: function(e){
-    console.log(e, e.target.value);
-    var searchString = e.target.value;
-    this.props.actions.updateSearchString(searchString);
-  },
+  return div(
+    {
+      class: 'TopBar'
+    },
+    [
+      input(
+        {
+          id: 'searchInput',
+          type: 'text',
+          value: this.props.searchString,
+          onInput: function(e){
+            console.log(e, e.target.value);
+            var searchString = e.target.value;
+            actionDispatcher.updateSearchString(searchString);
+          },
+        }
+      ),
+      <span class='TopBarRight'>
+      &nbsp;&nbsp;
+      &nbsp;&nbsp;
+      {this.props.updateTime}
+      &nbsp;&nbsp;
+      {this.props.count}
+      </span>
+    ]
+  )
+
+
   render: function(){
     return (
-      div( {class='TopBar'}, [
 
       ])
-        <input id='searchInput' type='text' value={this.props.searchString} onInput={this.updateSearchString}></input>
-        <span class='TopBarRight'>
-          &nbsp;&nbsp;
-          &nbsp;&nbsp;
-          {this.props.updateTime}
-          &nbsp;&nbsp;
-          {this.props.count}
-        </span>
     );
   }
 });
@@ -159,7 +162,8 @@ var TagSideBar = function(){
   );
 });
 
-var view = function(state, actions){
+
+var view = function(state, actionDispatcher){
   return div( {class:'App'}, [
     TopBar({
       searchString: this.props.filter.searchString,

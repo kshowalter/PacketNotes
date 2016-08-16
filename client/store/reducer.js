@@ -1,12 +1,5 @@
-import { combineReducers } from 'redux';
 import moment from 'moment';
 import _ from 'lodash';
-
-import {
-  ADD_NOTE,
-  SELECT_TAG,
-  UPDATE_SEARCH_STRING
-} from './actions';
 
 var tagMarkers = ['#','@'];
 
@@ -95,11 +88,11 @@ var updateSearchString = function(state,action){
 
 var updateFilter = function(state,action){
   switch (action.type) {
-  case SELECT_TAG:
+  case 'select_tag':
     state.tags = Object.assign({}, state.tags);
     state.tags[action.tag].selected = ! state.tags[action.tag].selected;
     break;
-  case UPDATE_SEARCH_STRING:
+  case 'update_search_string':
     state = Object.assign({}, state, {
       searchString: action.searchString
     });
@@ -166,11 +159,11 @@ function reducer( state={}, action ){
   }
 
   switch(action.type){
-  case ADD_NOTE:
+  case 'add_note':
     state = Object.assign({}, state, addNote(state, action) );
     break;
-  case SELECT_TAG:
-  case UPDATE_SEARCH_STRING:
+  case 'select_tag':
+  case 'update_search_string':
     state = Object.assign({}, state, {
       filter: updateFilter(state.filter, action)
     });
