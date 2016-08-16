@@ -17,7 +17,7 @@
   "keywords": [
     "PIM",
     "information",
-    "organization",
+    "organization"
   ],
   "dependencies": {
     "lowdb": "latest",
@@ -36,7 +36,7 @@
     "svgize": "git+https://github.com/kshowalter/svgize.git",
     "chart_maker": "git+https://github.com/kshowalter/chart_maker.git",
     "specdom_to_sgml": "git+https://github.com/kshowalter/specDOM_to_SGML.git",
-    "specdom_helper": "git+https://github.com/kshowalter/specDOM_helper.git",
+    "specdom_helper": "git+https://github.com/kshowalter/specDOM_helper.git"
   },
   "devDependencies": {
     "babel-eslint": "latest",
@@ -48,7 +48,4 @@
     "webpack": "latest",
     "webpack-dev-server": "latest"
   }
-}
-
-
 }
