@@ -1,4 +1,4 @@
-import _ from 'lowdash';
+import _ from 'lodash';
 
 import {div, span, a, ul, li, br, h1, h2, h3} from 'specdom_helper';
 
@@ -14,7 +14,7 @@ var Button = function(buttonClass, cb, children){
   )
 };
 
-var ButtonLi = function(name, buttonClass){
+var ButtonLi = function(key, buttonClass, name, cb){
   return li(
     {
       class: buttonClass,
@@ -28,157 +28,118 @@ var ButtonLi = function(name, buttonClass){
   )
 };
 
-var TopBar = function(){
-  return div(
-    {
-      class: 'TopBar'
-    },
-    [
-      input(
-        {
-          id: 'searchInput',
-          type: 'text',
-          value: this.props.searchString,
-          onInput: function(e){
-            console.log(e, e.target.value);
-            var searchString = e.target.value;
-            actionDispatcher.updateSearchString(searchString);
-          },
-        }
-      ),
-      <span class='TopBarRight'>
-      &nbsp;&nbsp;
-      &nbsp;&nbsp;
-      {this.props.updateTime}
-      &nbsp;&nbsp;
-      {this.props.count}
-      </span>
-    ]
-  )
+var TopBar = function(state, actionDispatcher){
+  return div({class: 'TopBar'}, [
+    input({
+      id: 'searchInput',
+      type: 'text',
+      value: state.filter.searchString,
+      onInput: function(e){
+        console.log(e, e.target.value);
+        var searchString = e.target.value;
+        actionDispatcher.updateSearchString(searchString);
+      },
+    }),
+    span({class:'TopBarRight'},[
+      '&nbsp;&nbsp;',
+      '&nbsp;&nbsp;',
+      state.updateTime,
+      '&nbsp;&nbsp;',
+      state.count
+    ])
+  ])
+};
 
 
-  render: function(){
-    return (
-
-      ])
-    );
-  }
-});
-
-
-var Note = function(){
-  selectTag: function(e){
-    console.log(e.target.innerHTML);
-    //var actions = this.props.actions;
-    var tag = e.target.innerHTML;
-    this.props.actions.selectTag(tag);
-
-  },
-  render: function(){
-    //console.log(this.props);
-    return (
-      div( {class='Note'}, [
-
-      ])
-        {this.props.note.words.map(function(word,id){
-          if( this.props.note.tags.indexOf(word)+1 ){
-            return (
-              <span key={id}>
-                <a href='#' onClick={this.selectTag}>{word}</a>
-                &nbsp;
-              </span>
-            );
-          } else {
-            return (
-              <span key={id}>
-                {word}
-                &nbsp;
-              </span>
-            );
+var Note = function(note){
+  var notes = note.words.map(function(word,id){
+    if( note.tags.indexOf(word)+1 ){
+      return span({key:id},[
+        a(word,'#', {
+          onClick: function(e){
+            console.log(e.target.innerHTML);
+            //var actions = this.props.actions;
+            var tag = e.target.innerHTML;
+            this.props.actions.selectTag(tag);
           }
-        }, this)}
-    );
-  }
-});
+        }),
+        '&nbsp;'
+      ]);
+    } else {
+      return span({key:id},[
+        word,
+        '&nbsp;'
+      ]);
+    }
+  })
 
-var Notes = function(){
-  render: function(){
-    //console.log(this.props);
-    var actions = this.props.actions;
-    return (
-      div( {class='Notes'}, [
+  return (
+    div( {class: 'Note'}, notes )
+  );
+}
 
-      ])
-        {this.props.displayedNotes.map(function(noteId,id) {
-          var note = this.props.notes[noteId];
-          return <Note note={note} key={id} actions={actions}/>;
-        },this)}
-    );
-  }
-});
+
+var Notes = function(state, actionDispatcher){
+  var notes = state.displayedNotes.map(function(noteId,id) {
+    var note = state.notes[noteId];
+    return Note(note)
+  });
+  return div( {class:'Notes'}, notes);
+};
 
 var AddNoteBar = function(){
-  addNote: function(e){
-    var newNote = document.getElementById('noteInput').value;
-    document.getElementById('noteInput').value = '';
-    console.log(newNote);
-    if( newNote !== '' ){
-      this.props.actions.addNote(newNote);
-    }
-  },
-  render: function(){
-    return (
-      div( {class='AddNoteBar'}, [
-
-      ])
-        <input type='text' id='noteInput'></input>
-        <Button buttonClass='button' cb={this.addNote}>
-          <i class='fa fa-plus'></i>
-        </Button>
-    );
-  }
-});
+  return div( {class:'AddNoteBar'}, [
+    input({
+      type: 'text',
+      id: 'noteInput'
+    }),
+    Button(
+      'button',
+      function(e){
+        var newNote = document.getElementById('noteInput').value;
+        document.getElementById('noteInput').value = '';
+        console.log(newNote);
+        if( newNote !== '' ){
+          actionDispatcher.addNote(newNote);
+        }
+      }
+    )
+  ]);
+};
 
 
 
-var TagSideBar = function(){
-  var selectTag = function(tag){
-    //console.log(this.props, tag);
-    this.props.actions.selectTag(tag);
-  },
-  return (
-    div( {class:'TagSideBar'}, [
-      ul( _.keys(arguments.tags).map(function(tagName,id){
-          var tagClass = 'tagButton';
-          if(this.props.tags[tagName].selected){
-            tagClass = 'tagButtonSelected';
+var TagSideBar = function(tags, actionDispatcher){
+  return div( {class:'TagSideBar'}, [
+    ul( _.keys(tags).map(function(tagName,id){
+      var tagClass = 'tagButton';
+      if(tags[tagName].selected){
+        tagClass = 'tagButtonSelected';
+      }
+      return (
+        ButtonLi(id, tagClass, tagName,
+          function(tag){
+            //console.log(this.props, tag);
+            actionDispatcher.selectTag(tag);
           }
-          return (
-            <ButtonLi key={id} buttonClass={tagClass} name={tagName} cb={this.selectTag} />
-          );
-        },this)
-      ]
-    ])
-  );
-});
+        )
+      );
+    }))
+  ]);
+};
 
 
 var view = function(state, actionDispatcher){
   return div( {class:'App'}, [
-    TopBar({
-      searchString: this.props.filter.searchString,
-      actions: actions,
-      updateTime: this.props.updateTime,
-      count: this.props.count
-    }),
+    TopBar(state, actionDispatcher),
     div( {class:'mainSection'}, [
-      TagSideBar( {tags:this.props.filter.tags, actions:actions }),
+      TagSideBar( state.filter.tags, actionDispatcher),
       div( {class:'flexSection'}, [
-        AddNoteBar({ actions:actions }),
-        Notes( {notes:this.props.notes, displayedNotes:this.props.displayedNotes, actions:actions })
+        AddNoteBar(actionDispatcher),
+        Notes( state, actionDispatcher)
       ])
     ])
-  ])
+  ]);
 };
 
 export default view;
