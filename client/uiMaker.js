@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import {div, span, a, ul, li, br, h1, h2, h3} from 'specdom_helper';
+import {div, span, a, ul, li, br, h1, h2, h3, input} from 'specdom_helper';
 
 var Button = function(buttonClass, cb, children){
   return span(
@@ -11,7 +11,7 @@ var Button = function(buttonClass, cb, children){
     [
       children
     ]
-  )
+  );
 };
 
 var ButtonLi = function(key, buttonClass, name, cb){
@@ -19,13 +19,13 @@ var ButtonLi = function(key, buttonClass, name, cb){
     {
       class: buttonClass,
       onClick: function(e){
-        this.props.cb(this.props.name);
+        cb(name);
       }
     },
     [
       name
     ]
-  )
+  );
 };
 
 var TopBar = function(state, actionDispatcher){
@@ -38,16 +38,16 @@ var TopBar = function(state, actionDispatcher){
         console.log(e, e.target.value);
         var searchString = e.target.value;
         actionDispatcher.updateSearchString(searchString);
-      },
+      }
     }),
     span({class:'TopBarRight'},[
-      '&nbsp;&nbsp;',
-      '&nbsp;&nbsp;',
+      &nbsp;&nbsp;,
+      &nbsp;&nbsp;,
       state.updateTime,
-      '&nbsp;&nbsp;',
+      &nbsp;&nbsp;,
       state.count
     ])
-  ])
+  ]);
 };
 
 
@@ -71,23 +71,23 @@ var Note = function(note){
         '&nbsp;'
       ]);
     }
-  })
+  });
 
   return (
     div( {class: 'Note'}, notes )
   );
-}
+};
 
 
 var Notes = function(state, actionDispatcher){
-  var notes = state.displayedNotes.map(function(noteId,id) {
+  var notes = state.displayedNotes.map(function(noteId,id){
     var note = state.notes[noteId];
-    return Note(note)
+    return Note(note);
   });
   return div( {class:'Notes'}, notes);
 };
 
-var AddNoteBar = function(){
+var AddNoteBar = function(actionDispatcher){
   return div( {class:'AddNoteBar'}, [
     input({
       type: 'text',
