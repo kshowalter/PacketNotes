@@ -1,7 +1,9 @@
 import io from 'socket.io-client';
 import seedrandom  from 'seedrandom';
 
-import redux from 'redux';
+//import redux from 'redux';
+var redux =require('redux');
+console.log(redux);
 import Router from 'hash_router';
 import SpecDOM  from 'specdom';
 
