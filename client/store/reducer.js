@@ -88,16 +88,16 @@ var updateSearchString = function(state,action){
 
 var updateFilter = function(state,action){
   switch (action.type) {
-  case 'select_tag':
+    case 'select_tag':
     state.tags = Object.assign({}, state.tags);
     state.tags[action.tag].selected = ! state.tags[action.tag].selected;
     break;
-  case 'update_search_string':
+    case 'update_search_string':
     state = Object.assign({}, state, {
       searchString: action.searchString
     });
     break;
-  default:
+    default:
   }
 
   var selectedTags = [];
@@ -149,25 +149,25 @@ var updateDisplayedNotes = function(state,action){
 
 function reducer( state={}, action ){
   //console.log('Action: ', action);
-  state = Object.assign({}, state, {
-    count: state.count + 1,
-    updateTime: moment().format('YYYY-MM-DD HH:mm:ss')
-  });
 
   if( ! action ){
     return state;
   }
 
   switch(action.type){
-  case 'add_note':
-    state = Object.assign({}, state, addNote(state, action) );
-    break;
-  case 'select_tag':
-  case 'update_search_string':
-    state = Object.assign({}, state, {
-      filter: updateFilter(state.filter, action)
-    });
-    break;
+    case 'add_note':
+      state = Object.assign({}, state, addNote(state, action) );
+      break;
+    case 'select_tag':
+    case 'update_search_string':
+      state = Object.assign({}, state, {
+        filter: updateFilter(state.filter, action)
+      });
+      break;
+    case 'update_time':
+      state = Object.assign({}, state, {
+        updateTime: moment().format('YYYY-MM-DD HH:mm:ss')
+      });
   }
 
   state = Object.assign({}, state, {

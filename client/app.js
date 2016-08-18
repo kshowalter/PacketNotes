@@ -41,6 +41,10 @@ window.onload = function(){
     view.load( uiConfig );
   });
 
+  //window.setInterval(function(){
+  //  actionDispatcher.updateTime();
+  //}, 1000);
+
   actionDispatcher.addNote('this is a #test');
   actionDispatcher.addNote('this is also #test #second_chance');
   actionDispatcher.addNote('this is note a test');

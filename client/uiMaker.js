@@ -42,9 +42,7 @@ var TopBar = function(state, actionDispatcher){
     }),
     span({class:'TopBarRight'},[
       '  ',
-      state.updateTime,
-      '  ',
-      state.count
+      state.updateTime
     ])
   ]);
 };

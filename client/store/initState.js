@@ -1,7 +1,9 @@
+import moment from 'moment';
+
 //module.exports = {
 export default {
-  count: 0,
-  updateTime: '0000-00-00 00:00:00',
+  updateTime: moment().format('YYYY-MM-DD HH:mm:ss'),
+
 
   filter: {
     tags: {},
@@ -13,6 +15,8 @@ export default {
   notes: [],
   LastNoteId: 0,
   displayedNotes: [],
-  words: []
+  words: [],
+
+  focus: 'topNote'
 
 };

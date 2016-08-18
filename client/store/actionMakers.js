@@ -18,6 +18,12 @@ export default {
       type: 'update_search_string',
       searchString: searchString
     };
+  },
+  updateTime: function(searchString){
+    return {
+      type: 'update_time',
+      searchString: searchString
+    };
   }
 
 };
