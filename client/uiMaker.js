@@ -6,7 +6,7 @@ var Button = function(buttonClass, cb, children){
   return span(
     {
       class: buttonClass,
-      onClick: cb
+      onclick: cb
     },
     [
       children
@@ -18,7 +18,7 @@ var ButtonLi = function(key, buttonClass, name, cb){
   return li(
     {
       class: buttonClass,
-      onClick: function(e){
+      onclick: function(e){
         cb(name);
       }
     },
@@ -34,7 +34,7 @@ var TopBar = function(state, actionDispatcher){
       id: 'searchInput',
       type: 'text',
       value: state.filter.searchString,
-      onInput: function(e){
+      oninput: function(e){
         console.log(e, e.target.value);
         var searchString = e.target.value;
         actionDispatcher.updateSearchString(searchString);
@@ -55,7 +55,7 @@ var Note = function(note){
     if( note.tags.indexOf(word)+1 ){
       return span({key:id},[
         a(word,'#', {
-          onClick: function(e){
+          onclick: function(e){
             console.log(e.target.innerHTML);
             //var actions = this.props.actions;
             var tag = e.target.innerHTML;
@@ -86,7 +86,7 @@ var Notes = function(state, actionDispatcher){
   return div( {class:'Notes'}, notes);
 };
 
-var AddNoteBar = function(){
+var AddNoteBar = function(actionDispatcher){
   return div( {class:'AddNoteBar'}, [
     input({
       type: 'text',
@@ -115,13 +115,11 @@ var TagSideBar = function(tags, actionDispatcher){
       if(tags[tagName].selected){
         tagClass = 'tagButtonSelected';
       }
-      return (
-        ButtonLi(id, tagClass, tagName,
-          function(tag){
-            //console.log(this.props, tag);
-            actionDispatcher.selectTag(tag);
-          }
-        )
+      return ButtonLi(id, tagClass, tagName,
+        function(tag){
+          console.log(tag);
+          actionDispatcher.selectTag(tag);
+        }
       );
     }))
   ]);
