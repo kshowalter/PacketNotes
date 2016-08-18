@@ -1,4 +1,4 @@
-//var path = require('path');
+var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
@@ -16,6 +16,9 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify('dev')
     })
   ],
+  // Fix npm link breaking exclude below
+  resolve: { fallback: path.join(__dirname, 'node_modules') },
+  resolveLoader: { fallback: path.join(__dirname, 'node_modules') },
   module: {
     loaders: [
       {
