@@ -50,7 +50,7 @@ var TopBar = function(state, actionDispatcher){
 };
 
 
-var Note = function(note){
+var Note = function(note, actionDispatcher){
   var notes = note.words.map(function(word,id){
     if( note.tags.indexOf(word)+1 ){
       return span({key:id},[
@@ -59,7 +59,7 @@ var Note = function(note){
             console.log(e.target.innerHTML);
             //var actions = this.props.actions;
             var tag = e.target.innerHTML;
-            this.props.actions.selectTag(tag);
+            actionDispatcher.selectTag(tag);
           }
         }),
         ' '
@@ -81,7 +81,7 @@ var Note = function(note){
 var Notes = function(state, actionDispatcher){
   var notes = state.displayedNotes.map(function(noteId,id){
     var note = state.notes[noteId];
-    return Note(note);
+    return Note(note, actionDispatcher);
   });
   return div( {class:'Notes'}, notes);
 };
