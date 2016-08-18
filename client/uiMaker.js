@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
-import {div, span, a, ul, li, br, h1, h2, h3, input} from 'specdom_helper';
-
+import {div, span, p, a, ul, li, br, h1, h2, h3, input} from 'specdom_helper';
+console.log(p)
 var Button = function(buttonClass, cb, children){
   return span(
     {
@@ -41,10 +41,9 @@ var TopBar = function(state, actionDispatcher){
       }
     }),
     span({class:'TopBarRight'},[
-      &nbsp;&nbsp;,
-      &nbsp;&nbsp;,
+      '  ',
       state.updateTime,
-      &nbsp;&nbsp;,
+      '  ',
       state.count
     ])
   ]);
@@ -63,12 +62,12 @@ var Note = function(note){
             this.props.actions.selectTag(tag);
           }
         }),
-        '&nbsp;'
+        ' '
       ]);
     } else {
       return span({key:id},[
         word,
-        '&nbsp;'
+        ' '
       ]);
     }
   });
@@ -87,7 +86,7 @@ var Notes = function(state, actionDispatcher){
   return div( {class:'Notes'}, notes);
 };
 
-var AddNoteBar = function(actionDispatcher){
+var AddNoteBar = function(){
   return div( {class:'AddNoteBar'}, [
     input({
       type: 'text',
