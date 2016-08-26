@@ -17,6 +17,7 @@ export default {
   displayedNotes: [],
   words: [],
 
-  focus: 'topNote'
+  focus: 'searchInput',
+  focusLast: 'noteInput'
 
 };

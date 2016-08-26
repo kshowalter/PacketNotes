@@ -1,7 +1,7 @@
 import _ from 'lodash';
 
 import {div, span, p, a, ul, li, br, h1, h2, h3, input} from 'specdom_helper';
-console.log(p)
+
 var Button = function(buttonClass, cb, children){
   return span(
     {
@@ -115,7 +115,6 @@ var TagSideBar = function(tags, actionDispatcher){
       }
       return ButtonLi(id, tagClass, tagName,
         function(tag){
-          console.log(tag);
           actionDispatcher.selectTag(tag);
         }
       );

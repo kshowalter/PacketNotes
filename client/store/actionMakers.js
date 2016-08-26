@@ -24,6 +24,18 @@ export default {
       type: 'update_time',
       searchString: searchString
     };
+  },
+  setFocus: function(elementId){
+    return {
+      type: 'element_id',
+      elementId: elementId
+    };
+  },
+  keyPress: function(key){
+    return {
+      type: 'key_press',
+      key: key
+    };
   }
 
 };

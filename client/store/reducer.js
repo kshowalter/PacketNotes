@@ -138,36 +138,56 @@ var updateDisplayedNotes = function(state,action){
   return displayedNotes;
 };
 
-//var initialize = function(state,action){
-//  state = Object.assign({}, state, {
-//    displayedNotes: updateDisplayedNotes(state, action)
-//  });
-//
-//
-//  return state;
-//};
+var toggle_search = function(state){
+  if( state.focus === 'searchInput'){
+    state = Object.assign({}, state, {
+      focus: state.focusLast
+    });
+  } else {
+    state = Object.assign({}, state, {
+      focus: 'searchInput'
+    });
+  }
+  return state;
+};
+
+var keyPress = function(state, action){
+  //  isEscape = evt.keyCode == 27;
+  console.log('keycode', action.key);
+
+  if(action.key === 'Escape'){
+    state = toggle_search(state);
+  }
+
+  return state;
+};
+
 
 function reducer( state={}, action ){
-  //console.log('Action: ', action);
 
   if( ! action ){
     return state;
   }
 
-  switch(action.type){
-    case 'add_note':
-      state = Object.assign({}, state, addNote(state, action) );
-      break;
-    case 'select_tag':
-    case 'update_search_string':
-      state = Object.assign({}, state, {
-        filter: updateFilter(state.filter, action)
-      });
-      break;
-    case 'update_time':
-      state = Object.assign({}, state, {
-        updateTime: moment().format('YYYY-MM-DD HH:mm:ss')
-      });
+  if( action.type === 'key_press'){
+    state = Object.assign({}, keyPress(state,action));
+  } else if(action.type=== 'add_note' ){
+    state = Object.assign({}, state, addNote(state, action) );
+  } else if(action.type=== 'update_search_string' || action.type=== 'select_tag' ){
+    state = Object.assign({}, state, {
+      filter: updateFilter(state.filter, action)
+    });
+  } else if(action.type=== 'update_time' ){
+    state = Object.assign({}, state, {
+      updateTime: moment().format('YYYY-MM-DD HH:mm:ss')
+    });
+  } else if(action.type=== 'element_id' ){
+    state = Object.assign({}, state, {
+      focus: action.elementId
+    });
+  } else if(action.type=== '' ){
+    console.log('nothing');
+
   }
 
   state = Object.assign({}, state, {

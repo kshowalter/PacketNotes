@@ -1,31 +1,39 @@
+var keyTable = {
+  27: 'Escape',
+  32: 'Space',
+  9: 'Tab',
+  192: '`',
+  17: 'Control',
+  18: 'Alt'
+};
+
 export default function(actionDispatcher){
 
-  document.onkeydown = function(evt) {
+  document.onkeyup = function(evt) {
     evt = evt || window.event;
-    var isEscape = false;
+    var key = '';
+    //console.log(evt.key, evt.keyCode)
     if ( 'key' in evt ) {
-      isEscape = evt.key == 'Escape';
+      key = evt.key;
     } else {
-      isEscape = evt.keyCode == 27;
+      key = keyTable(evt.keyCode);
+      if( !key ){
+        key = evt.keyCode;
+      }
     }
-    if (isEscape) {
-      document.getElementById('searchInput').focus();
-    }
+    actionDispatcher.keyPress(key);
   };
 
 
-  document.onkeypress = function(e) {
-    e = e || window.event;
-    // use e.keyCode
-    //console.log(e, 'key', e.code);
-    if( e.code == 'Enter'){
-      var newNote = document.getElementById('noteInput').value;
-      actionDispatcher.addNote(newNote);
-
-      document.getElementById('noteInput').value = '';
-      document.getElementById('noteInput').focus();
-    }
-  };
+  //document.onkeypress = function(e) {
+  //  e = e || window.event;
+  //  // use e.keyCode
+  //  //console.log(e, 'key', e.code);
+  //  if( e.code == 'Enter'){
+  //    var newNote = document.getElementById('noteInput').value;
+  //    actionDispatcher.addNote(newNote);
+  //  }
+  //};
 
 
 }

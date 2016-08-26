@@ -39,6 +39,12 @@ window.onload = function(){
 
     var uiConfig = uiMaker(state, actionDispatcher);
     view.load( uiConfig );
+
+    var focusElement = document.getElementById(state.focus);
+    var len = focusElement.value.length
+    focusElement.focus();
+    focusElement.scrollIntoView();
+    focusElement.setSelectionRange();
   });
 
   //window.setInterval(function(){
