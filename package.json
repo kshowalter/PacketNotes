@@ -23,7 +23,7 @@
     "lowdb": "latest",
     "moment": "latest",
     "math": "latest",
-    "seedrandom": "latest",
+    "chance": "latest",
     "lodash": "^4.11.2",
     "redux": "latest",
     "redux-thunk": "latest",

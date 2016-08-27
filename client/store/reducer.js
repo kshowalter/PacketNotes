@@ -49,13 +49,13 @@ var addNote = function(state,action){
 };
 
 
-var selectTag = function(state,action){
-  var tags = Object.assign({},state);
-
-  tags[action.tag].selected = ! tags[action.tag].selected;
-
-  return tags;
-};
+//var selectTag = function(state,action){
+//  var tags = Object.assign({},state);
+//
+//  tags[action.tag].selected = ! tags[action.tag].selected;
+//
+//  return tags;
+//};
 
 var selectTag = function(state,action){
   var tags = [...state.tags];
@@ -87,17 +87,13 @@ var updateSearchString = function(state,action){
 };
 
 var updateFilter = function(state,action){
-  switch (action.type) {
-    case 'select_tag':
+  if( action.type === 'select_tag' ){
     state.tags = Object.assign({}, state.tags);
     state.tags[action.tag].selected = ! state.tags[action.tag].selected;
-    break;
-    case 'update_search_string':
+  } else if( action.type === 'update_search_string' ){
     state = Object.assign({}, state, {
       searchString: action.searchString
     });
-    break;
-    default:
   }
 
   var selectedTags = [];
