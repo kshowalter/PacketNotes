@@ -13,7 +13,8 @@ export default {
   displayedNotes: [],
   words: [],
   focus: 'searchInput',
-  focusLast: 'noteInput',
+  focusNum: 1,
+  focusLast: 'notes',
   indexTags: {},
   indexWords: {}
 };

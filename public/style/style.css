@@ -140,6 +140,11 @@ overflow: hidden;
   border: 1px solid lightgrey;
 }
 
+.NoteSelected {
+  background: White;
+  border: 1px solid blue;
+}
+
 
 
 .AddNoteBar {
@@ -148,6 +153,11 @@ overflow: hidden;
   margin: 5px;
   display: block;
   border: 1px solid lightgrey;
+}
+
+.AddNoteBarFocused {
+  background: White;
+  border: 1px solid blue;
 }
 
 

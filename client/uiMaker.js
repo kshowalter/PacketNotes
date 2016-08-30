@@ -4,6 +4,7 @@ import {div, span, p, a, ul, li, br, h1, h2, h3, input} from 'specdom_helper';
 
 var Button = function(buttonClass, cb, children){
   return span(
+    '+',
     {
       class: buttonClass,
       onclick: cb
@@ -30,16 +31,6 @@ var ButtonLi = function(key, buttonClass, name, cb){
 
 var TopBar = function(state, actionDispatcher){
   return div({class: 'TopBar'}, [
-    input({
-      id: 'searchInput',
-      type: 'text',
-      value: state.filter.searchString,
-      oninput: function(e){
-        console.log(e, e.target.value);
-        var searchString = e.target.value;
-        actionDispatcher.updateSearchString(searchString);
-      }
-    }),
     span({class:'TopBarRight'},[
       '  ',
       state.updateTime
@@ -84,11 +75,17 @@ var Notes = function(state, actionDispatcher){
   return div( {class:'Notes'}, notes);
 };
 
-var AddNoteBar = function(actionDispatcher){
+var AddNoteBar = function(state, actionDispatcher){
   return div( {class:'AddNoteBar'}, [
     input({
+      id: 'searchInput',
       type: 'text',
-      id: 'noteInput'
+      value: state.filter.searchString,
+      oninput: function(e){
+        console.log(e.target.value);
+        var searchString = e.target.value;
+        actionDispatcher.updateSearchString(searchString);
+      }
     }),
     Button(
       'button',
@@ -99,6 +96,10 @@ var AddNoteBar = function(actionDispatcher){
         if( newNote !== '' ){
           actionDispatcher.addNote(newNote);
         }
+        /////
+        var event = new Event('build');
+        document.dispatchEvent(event);
+        /////
       }
     )
   ]);
@@ -129,7 +130,7 @@ var view = function(state, actionDispatcher){
     div( {class:'mainSection'}, [
       TagSideBar( state.filter.tags, actionDispatcher),
       div( {class:'flexSection'}, [
-        AddNoteBar(actionDispatcher),
+        AddNoteBar(state, actionDispatcher),
         Notes( state, actionDispatcher)
       ])
     ])

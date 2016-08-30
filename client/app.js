@@ -56,6 +56,11 @@ var sentenceWithTags = function(tags){
   return wordList.join(' ');
 };
 
+// https://developer.mozilla.org/en-US/docs/Web/Guide/Events/Creating_and_triggering_events
+document.addEventListener('build', function(e){
+  console.log(e);
+}, false);
+
 
 window.onload = function(){
   var view = SpecDOM('#content');
@@ -67,10 +72,22 @@ window.onload = function(){
     var uiConfig = uiMaker(state, actionDispatcher);
     view.load( uiConfig );
 
-    var focusElement = document.getElementById(state.focus);
-    focusElement.focus();
-    focusElement.scrollIntoView();
-    focusElement.setSelectionRange();
+    var focusElement;
+    if( state.focus === 'notes' ){
+      var num = state.focusNum;
+      focusElement = document.getElementsByClassName('Note')[num-1];
+      focusElement.className += ' NoteSelected';
+    } else if( state.focus === 'searchInput' ){
+      console.log('#focus: ', state.focus);
+      focusElement = document.getElementById('searchInput');
+      focusElement.className += ' AddNoteBarFocused';
+      focusElement.focus();
+      focusElement.scrollIntoView();
+      focusElement.setSelectionRange();
+    } else {
+      focusElement = document.getElementById(state.focus);
+      console.log('I do not know how to focus on "' + state.focus + '"');
+    }
   });
 
   //window.setInterval(function(){

@@ -35,17 +35,10 @@ var addNote = function(state,action){
     }
   });
 
+  state.notes = [...state.notes, newNote];
+  state.words = words;
 
-
-
-  var newState = {
-    notes: [...state.notes, newNote],
-    words: words
-  };
-
-
-  return newState;
-
+  return state;
 };
 
 
@@ -57,6 +50,7 @@ var addNote = function(state,action){
 //  return tags;
 //};
 
+/*
 var selectTag = function(state,action){
   var tags = [...state.tags];
 
@@ -68,13 +62,15 @@ var selectTag = function(state,action){
     tags.push(action.tag);
   }
 
-  var searchParams = Object.assign({},state,{
+  var searchParams = Object.assign( {}, state, {
     tags: tags,
     searchWords: state.textWords.concat( tags )
   });
   return searchParams;
 };
+*/
 
+/*
 var updateSearchString = function(state,action){
   var searchString = action.searchString;
 
@@ -85,41 +81,42 @@ var updateSearchString = function(state,action){
   });
   return searchParams;
 };
+*/
 
-var updateFilter = function(state,action){
+var updateFilter = function(filter,action){
   if( action.type === 'select_tag' ){
-    state.tags = Object.assign({}, state.tags);
-    state.tags[action.tag].selected = ! state.tags[action.tag].selected;
+    filter.tags = Object.assign({}, filter.tags);
+    filter.tags[action.tag].selected = ! filter.tags[action.tag].selected;
   } else if( action.type === 'update_search_string' ){
-    state = Object.assign({}, state, {
+    filter = Object.assign({}, filter, {
       searchString: action.searchString
     });
   }
 
   var selectedTags = [];
 
-  for(var tagName in state.tags ){
-    if( state.tags[tagName].selected ){
+  for(var tagName in filter.tags ){
+    if( filter.tags[tagName].selected ){
       selectedTags.push(tagName);
     }
   }
 
-  var searchWords = [].concat( selectedTags, state.searchString.split(' ') );
+  var searchWords = [].concat( selectedTags, filter.searchString.split(' ') );
 
   searchWords = _.filter(searchWords, function(word){
     return word !== '';
   });
 
-  state = Object.assign({}, state, {
+  filter = Object.assign({}, filter, {
     searchWords: searchWords,
     selectedTags: selectedTags
   });
 
-  return state;
+  return filter;
 };
 
 
-var updateDisplayedNotes = function(state,action){
+var updateDisplayedNotes = function(state, action){
   if( state.filter.searchWords.length ){
     var displayedNotes = [];
     state.notes.forEach(function(note,id){
@@ -131,69 +128,109 @@ var updateDisplayedNotes = function(state,action){
   } else {
     displayedNotes = _.keys(state.notes);
   }
+  //state.displayedNotes = displayedNotes;
   return displayedNotes;
 };
 
-var toggle_search = function(state){
+var toggleSearchFocus = function(state){
   if( state.focus === 'searchInput'){
     state = Object.assign({}, state, {
       focus: state.focusLast
     });
   } else {
     state = Object.assign({}, state, {
-      focus: 'searchInput'
+      focus: 'searchInput',
+      focusLast: state.focus
     });
   }
   return state;
 };
+
+var move = function(state, action){
+  var direction = action.key.slice(5);
+  if( direction === 'Down' && state.focus === 'notes' ){
+    var newNum = state.focusNum +1;
+    if( newNum < state.displayedNotes.length+1 ){
+      state = Object.assign({}, state, {
+        focusNum: state.focusNum +1
+      });
+    }
+  } else if( direction === 'Down' && state.focus === 'searchInput' ){
+    state = Object.assign({}, state, {
+      focus: 'notes',
+      focusNum: 1
+    });
+  } else if( direction === 'Up' && state.focus === 'notes' ){
+    var newNum = state.focusNum -1;
+    if( newNum <= 0 ){
+      state = Object.assign({}, state, {
+        focus: 'searchInput',
+        focusLast: state.focus
+      });
+    } else {
+      state = Object.assign({}, state, {
+        focusNum: newNum
+      });
+    }
+  }
+  return state;
+};
+
+var handleInput = function(state,action){
+  return state;
+};
+
 
 var keyPress = function(state, action){
   //  isEscape = evt.keyCode == 27;
-  console.log('keycode', action.key);
+  //console.log('keycode', action.key);
 
-  if(action.key === 'Escape'){
-    state = toggle_search(state);
+  if( action.key === 'Escape' ){
+    state = toggleSearchFocus(state);
+  } else if( action.key.slice(0,5) === 'Arrow' ){
+    state = move(state, action);
+  } else if( action.key === 'Enter' && state.focus === 'searchInput' ){
+    state = handleInput(state, action);
   }
 
   return state;
 };
 
 
-function reducer( state={}, action ){
-
+function reducer( existingState={}, action ){
   if( ! action ){
-    return state;
+    return existingState;
   }
+
+  var state = _.cloneDeep(existingState);
 
   if( action.type === 'key_press'){
-    state = Object.assign({}, keyPress(state,action));
-  } else if(action.type=== 'add_note' ){
-    state = Object.assign({}, state, addNote(state, action) );
-  } else if(action.type=== 'update_search_string' || action.type=== 'select_tag' ){
-    state = Object.assign({}, state, {
-      filter: updateFilter(state.filter, action)
-    });
-  } else if(action.type=== 'update_time' ){
-    state = Object.assign({}, state, {
-      updateTime: moment().format('YYYY-MM-DD HH:mm:ss')
-    });
-  } else if(action.type=== 'element_id' ){
-    state = Object.assign({}, state, {
-      focus: action.elementId
-    });
-  } else if(action.type=== '' ){
-    console.log('nothing');
+    state = keyPress(state, action);
 
+  } else if(action.type=== 'add_note' ){
+    state = addNote(state,action);
+
+  } else if(action.type=== 'update_search_string' || action.type=== 'select_tag' ){
+    state.filter = updateFilter(state.filter, action);
+
+  } else if(action.type=== 'update_time' ){
+    state.updateTime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+  } else if(action.type=== 'element_id' ){
+    state.focus = action.elementId;
+
+  } else if( action.type.slice(0,2) === '@@' ){
+    console.log('Ignoring: ', action);
+    return existingState;
+
+  } else {
+    console.log('I do not know how to: ', action);
+    return existingState;
   }
 
-  state = Object.assign({}, state, {
-    displayedNotes: updateDisplayedNotes(state, action)
-  });
+  state.displayedNotes = updateDisplayedNotes(state, action);
 
-
-  return state;
-
-
+  return _.merge({}, existingState, state);
 }
 
 export default reducer;
