@@ -2,44 +2,44 @@ export default {
 
   addNote: function(text,parentID){
     return {
-      type: 'add_note',
+      type: 'addNote',
       text: text,
       parentID: parentID
     };
   },
   selectTag: function(tag){
     return {
-      type: 'select_tag',
+      type: 'selectTag',
       tag: tag
     };
   },
   updateSearchString: function(searchString){
     return {
-      type: 'update_search_string',
+      type: 'updateSearchString',
       searchString: searchString
     };
   },
   updateTime: function(searchString){
     return {
-      type: 'update_time',
+      type: 'updateTime',
       searchString: searchString
     };
   },
   toggleSearchFocus: function(){
     return {
-      type: 'toggle_search_focus',
+      type: 'toggleSearchFocus',
       toggle: true
     };
   },
   moveFocus: function(direction){
     return {
-      type: 'move_focus',
+      type: 'moveFocus',
       direction: direction
     };
   },
   enterKey: function(){
     return {
-      type: 'enter_key'
+      type: 'enterKey'
     };
   },
   toggleInputMode: function(){

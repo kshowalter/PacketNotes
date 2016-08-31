@@ -84,10 +84,10 @@ var updateSearchString = function(state,action){
 */
 
 var updateFilter = function(filter,action){
-  if( action.type === 'select_tag' ){
+  if( action.type === 'selectTag' ){
     filter.tags = Object.assign({}, filter.tags);
     filter.tags[action.tag].selected = ! filter.tags[action.tag].selected;
-  } else if( action.type === 'update_search_string' ){
+  } else if( action.type === 'updateSearchString' ){
     filter = Object.assign({}, filter, {
       searchString: action.searchString
     });
@@ -197,22 +197,22 @@ function reducer( existingState={}, action ){
   ].indexOf(action.type)+1 ){
     console.log('Reducing', action);
     state = r[action.type](state,action);
-  } else if( action.type === 'toggle_search_focus'){
+  } else if( action.type === 'toggleSearchFocus'){
     state = toggleSearchFocus(state);
 
-  } else if(action.type=== 'move_focus' ){
+  } else if(action.type=== 'moveFocus' ){
     state = moveFocus(state,action);
 
-  } else if(action.type=== 'enter_key' ){
+  } else if(action.type=== 'enterKey' ){
     console.log('Now what?');
 
-  } else if(action.type=== 'add_note' ){
+  } else if(action.type=== 'addNote' ){
     state = addNote(state,action);
 
-  } else if(action.type=== 'update_search_string' || action.type=== 'select_tag' ){
+  } else if(action.type=== 'updateSearchString' || action.type=== 'selectTag' ){
     state.filter = updateFilter(state.filter, action);
 
-  } else if(action.type=== 'update_time' ){
+  } else if(action.type=== 'updateTime' ){
     state.updateTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
   } else if(action.type=== 'element_id' ){
