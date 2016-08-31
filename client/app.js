@@ -73,19 +73,19 @@ window.onload = function(){
     view.load( uiConfig );
 
     var focusElement;
-    if( state.focus === 'notes' ){
-      var num = state.focusNum;
+    if( state.ui.focus === 'notes' ){
+      var num = state.ui.focusNum;
       focusElement = document.getElementsByClassName('Note')[num-1];
       focusElement.className += ' NoteSelected';
-    } else if( state.focus === 'searchInput' ){
-      focusElement = document.getElementById('searchInput');
-      focusElement.className += ' AddNoteBarFocused';
+    } else if( state.ui.focus === 'searchInput' ){
+      focusElement = document.getElementsByClassName('searchInput')[0];
+      focusElement.className += ' searchInputFocused';
       focusElement.focus();
       focusElement.scrollIntoView();
       focusElement.value = focusElement.value;
     } else {
-      focusElement = document.getElementById(state.focus);
-      console.log('I do not know how to focus on "' + state.focus + '"');
+      focusElement = document.getElementById(state.ui.focus);
+      console.log('I do not know how to focus on "' + state.ui.focus + '"');
     }
   });
 

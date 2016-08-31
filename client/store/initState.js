@@ -10,12 +10,15 @@ export default {
   },
   notes: [],
   LastNoteId: 0,
-  displayedNotes: [],
-  words: [],
-  focus: 'searchInput',
-  focusNum: 1,
-  focusLast: 'notes',
-  indexTags: {},
-  indexWords: {},
-  inputMode: '_ search'
+  ui: {
+    focus: 'searchInput',
+    focusNum: 1,
+    focusLast: 'notes',
+    inputMode: '_ search',
+    displayedNotes: []
+  },
+  index: {
+    tags: {},
+    words: {}
+  }
 };

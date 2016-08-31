@@ -68,7 +68,7 @@ var Note = function(note, actionDispatcher){
 
 
 var Notes = function(state, actionDispatcher){
-  var notes = state.displayedNotes.map(function(noteId,id){
+  var notes = state.ui.displayedNotes.map(function(noteId,id){
     var note = state.notes[noteId];
     return Note(note, actionDispatcher);
   });
@@ -78,7 +78,7 @@ var Notes = function(state, actionDispatcher){
 var AddNoteBar = function(state, actionDispatcher){
   return div( {class:'AddNoteBar'}, [
     input({
-      id: 'searchInput',
+      class: 'searchInput',
       type: 'text',
       value: state.filter.searchString,
       oninput: function(e){
@@ -88,7 +88,7 @@ var AddNoteBar = function(state, actionDispatcher){
       }
     }),
     Button(
-      state.inputMode,
+      state.ui.inputMode,
       'button',
       function(e){
         var newNote = document.getElementById('searchInput').value;

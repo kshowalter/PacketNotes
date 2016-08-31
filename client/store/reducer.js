@@ -1,5 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
+import updeep from 'updeep';
 
 var tagMarkers = ['#','@'];
 
@@ -27,18 +28,18 @@ r.addNote = function(state,action){
     }
   });
 
-  var words = [...state.words];
+  //var words = [...state.words];
 
-  newNote.words.forEach(function(word){
-    if( ! words[word] ){
-      words[word] = [id];
-    } else {
-      words[word].push(id);
-    }
-  });
+  //newNote.words.forEach(function(word){
+  //  if( ! words[word] ){
+  //    words[word] = [id];
+  //  } else {
+  //    words[word].push(id);
+  //  }
+  //});
 
   state.notes = [...state.notes, newNote];
-  state.words = words;
+  //state.words = words;
 
   return state;
 };
@@ -59,7 +60,7 @@ var updateFilter = function(state,action){
     return word !== '';
   });
 
-  state = Object.assign({}, state, {
+  state.filter = Object.assign({}, state.filter, {
     searchWords: searchWords,
     selectedTags: selectedTags
   });
@@ -89,14 +90,14 @@ r.updateSearchString = function(state,action){
 
 
 r.toggleSearchFocus = function(state,action){
-  if( state.focus === 'searchInput'){
-    state = Object.assign({}, state, {
-      focus: state.focusLast
+  if( state.ui.focus === 'searchInput'){
+    state.ui = Object.assign({}, state.ui, {
+      focus: state.ui.focusLast
     });
   } else {
-    state = Object.assign({}, state, {
+    state.ui = Object.assign({}, state.ui, {
       focus: 'searchInput',
-      focusLast: state.focus
+      focusLast: state.ui.focus
     });
   }
   return state;
@@ -104,27 +105,27 @@ r.toggleSearchFocus = function(state,action){
 
 r.moveFocus = function(state, action){
   var direction = action.direction;
-  if( direction === 'Down' && state.focus === 'notes' ){
-    var newNum = state.focusNum +1;
-    if( newNum < state.displayedNotes.length+1 ){
-      state = Object.assign({}, state, {
-        focusNum: state.focusNum +1
+  if( direction === 'Down' && state.ui.focus === 'notes' ){
+    var newNum = state.ui.focusNum +1;
+    if( newNum < state.ui.displayedNotes.length+1 ){
+      state.ui = Object.assign({}, state.ui, {
+        focusNum: state.ui.focusNum +1
       });
     }
-  } else if( direction === 'Down' && state.focus === 'searchInput' ){
-    state = Object.assign({}, state, {
+  } else if( direction === 'Down' && state.ui.focus === 'searchInput' ){
+    state.ui = Object.assign({}, state.ui, {
       focus: 'notes',
       focusNum: 1
     });
-  } else if( direction === 'Up' && state.focus === 'notes' ){
-    var newNum = state.focusNum -1;
+  } else if( direction === 'Up' && state.ui.focus === 'notes' ){
+    var newNum = state.ui.focusNum -1;
     if( newNum <= 0 ){
-      state = Object.assign({}, state, {
+      state.ui = Object.assign({}, state.ui, {
         focus: 'searchInput',
-        focusLast: state.focus
+        focusLast: state.ui.focus
       });
     } else {
-      state = Object.assign({}, state, {
+      state.ui = Object.assign({}, state.ui, {
         focusNum: newNum
       });
     }
@@ -133,7 +134,7 @@ r.moveFocus = function(state, action){
 };
 
 r.toggleInputMode = function(state,action){
-  state.inputMode = state.inputMode === '_ search' ? '+ add' : '_ search';
+  state.ui.inputMode = state.ui.inputMode === '_ search' ? '+ add' : '_ search';
 
   return state;
 };
@@ -154,8 +155,9 @@ r.updateTime = function(state,action){
 
 
 var updateDisplayedNotes = function(state, action){
+  var displayedNotes = [];
   if( state.filter.searchWords.length ){
-    var displayedNotes = [];
+    displayedNotes = [];
     state.notes.forEach(function(note,id){
       var matches = _.intersection( note.words, state.filter.searchWords );
       if( matches.length ){
@@ -165,7 +167,7 @@ var updateDisplayedNotes = function(state, action){
   } else {
     displayedNotes = _.keys(state.notes);
   }
-  //state.displayedNotes = displayedNotes;
+  //state.ui.displayedNotes = displayedNotes;
   return displayedNotes;
 };
 
@@ -199,9 +201,11 @@ function reducer( existingState={}, action ){
     return existingState;
   }
 
-  state.displayedNotes = updateDisplayedNotes(state, action);
+  state.ui.displayedNotes = updateDisplayedNotes(state, action);
 
-  return _.merge({}, existingState, state);
+  state = updeep(state, existingState);
+
+  return state;
 }
 
 export default reducer;

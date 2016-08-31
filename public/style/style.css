@@ -155,11 +155,14 @@ overflow: hidden;
   border: 1px solid lightgrey;
 }
 
-.AddNoteBarFocused {
-  background: White;
+
+.searchInput {
+  background-color: WhiteSmoke;
+}
+.searchInputFocused {
+  background-color: White;
   border: 1px solid blue;
 }
-
 
 .button{
   padding: 2px 5px;
