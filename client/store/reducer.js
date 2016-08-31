@@ -146,8 +146,8 @@ var toggleSearchFocus = function(state){
   return state;
 };
 
-var move = function(state, action){
-  var direction = action.key.slice(5);
+var moveFocus = function(state, action){
+  var direction = action.direction;
   if( direction === 'Down' && state.focus === 'notes' ){
     var newNum = state.focusNum +1;
     if( newNum < state.displayedNotes.length+1 ){
@@ -176,22 +176,10 @@ var move = function(state, action){
   return state;
 };
 
-var handleInput = function(state,action){
-  return state;
-};
+var r = {};
 
-
-var keyPress = function(state, action){
-  //  isEscape = evt.keyCode == 27;
-  //console.log('keycode', action.key);
-
-  if( action.key === 'Escape' ){
-    state = toggleSearchFocus(state);
-  } else if( action.key.slice(0,5) === 'Arrow' ){
-    state = move(state, action);
-  } else if( action.key === 'Enter' && state.focus === 'searchInput' ){
-    state = handleInput(state, action);
-  }
+r.toggleInputMode = function(state,action){
+  state.inputMode = state.inputMode === '_ search' ? '+ add' : '_ search';
 
   return state;
 };
@@ -204,8 +192,19 @@ function reducer( existingState={}, action ){
 
   var state = _.cloneDeep(existingState);
 
-  if( action.type === 'key_press'){
-    state = keyPress(state, action);
+  if( [
+    'toggleInputMode'
+  ].indexOf(action.type)+1 ){
+    console.log('Reducing', action);
+    state = r[action.type](state,action);
+  } else if( action.type === 'toggle_search_focus'){
+    state = toggleSearchFocus(state);
+
+  } else if(action.type=== 'move_focus' ){
+    state = moveFocus(state,action);
+
+  } else if(action.type=== 'enter_key' ){
+    console.log('Now what?');
 
   } else if(action.type=== 'add_note' ){
     state = addNote(state,action);

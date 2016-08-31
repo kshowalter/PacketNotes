@@ -21,7 +21,18 @@ export default function(actionDispatcher){
         key = evt.keyCode;
       }
     }
-    actionDispatcher.keyPress(key);
+
+    if( key === 'Escape' ){
+      actionDispatcher.toggleSearchFocus();
+    } else if( key.slice(0,5) === 'Arrow' ){
+      var direction = key.slice(5);
+      actionDispatcher.moveFocus(direction);
+    } else if( key === 'Enter' ){
+      actionDispatcher.enterKey();
+    } else if( key === 'Tab' ){
+      actionDispatcher.toggleInputMode();
+    }
+
   };
 
 

@@ -16,5 +16,6 @@ export default {
   focusNum: 1,
   focusLast: 'notes',
   indexTags: {},
-  indexWords: {}
+  indexWords: {},
+  inputMode: '_ search'
 };

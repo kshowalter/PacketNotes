@@ -25,16 +25,26 @@ export default {
       searchString: searchString
     };
   },
-  setFocus: function(elementId){
+  toggleSearchFocus: function(){
     return {
-      type: 'element_id',
-      elementId: elementId
+      type: 'toggle_search_focus',
+      toggle: true
     };
   },
-  keyPress: function(key){
+  moveFocus: function(direction){
     return {
-      type: 'key_press',
-      key: key
+      type: 'move_focus',
+      direction: direction
+    };
+  },
+  enterKey: function(){
+    return {
+      type: 'enter_key'
+    };
+  },
+  toggleInputMode: function(){
+    return {
+      type: 'toggleInputMode'
     };
   }
 

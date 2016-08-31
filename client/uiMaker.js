@@ -2,9 +2,9 @@ import _ from 'lodash';
 
 import {div, span, p, a, ul, li, br, h1, h2, h3, input} from 'specdom_helper';
 
-var Button = function(buttonClass, cb, children){
+var Button = function(text, buttonClass, cb, children){
   return span(
-    '+',
+    text,
     {
       class: buttonClass,
       onclick: cb
@@ -82,16 +82,17 @@ var AddNoteBar = function(state, actionDispatcher){
       type: 'text',
       value: state.filter.searchString,
       oninput: function(e){
-        console.log(e.target.value);
+        console.log('@oninput', e.target.value);
         var searchString = e.target.value;
         actionDispatcher.updateSearchString(searchString);
       }
     }),
     Button(
+      state.inputMode,
       'button',
       function(e){
-        var newNote = document.getElementById('noteInput').value;
-        document.getElementById('noteInput').value = '';
+        var newNote = document.getElementById('searchInput').value;
+        document.getElementById('searchInput').value = '';
         console.log(newNote);
         if( newNote !== '' ){
           actionDispatcher.addNote(newNote);

@@ -78,12 +78,11 @@ window.onload = function(){
       focusElement = document.getElementsByClassName('Note')[num-1];
       focusElement.className += ' NoteSelected';
     } else if( state.focus === 'searchInput' ){
-      console.log('#focus: ', state.focus);
       focusElement = document.getElementById('searchInput');
       focusElement.className += ' AddNoteBarFocused';
       focusElement.focus();
       focusElement.scrollIntoView();
-      focusElement.setSelectionRange();
+      focusElement.value = focusElement.value;
     } else {
       focusElement = document.getElementById(state.focus);
       console.log('I do not know how to focus on "' + state.focus + '"');
