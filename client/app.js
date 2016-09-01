@@ -35,13 +35,14 @@ var words = Words();
 
 var sentenceWithTags = function(tags){
   var wordList = _.times( chance.integer({min:5, max:20}) , function(){
+    //var word = chance.word();
     var word = chance.pickone(words.random);
     var f = chance.floating({min:0,max:1});
-    if( f <= 0.05 ){
+    if( f <= 0.01 ){
       word = '#' + word;
       tags.push(word);
       return word;
-    } else if( f<= 0.4) {
+    } else if( f<= 0.2) {
       if(tags.length){
         return chance.pickone(tags);
       } else {
@@ -93,12 +94,20 @@ window.onload = function(){
   //  actionDispatcher.updateTime();
   //}, 1000);
 
-  actionDispatcher.addNote('this is a #test');
-  actionDispatcher.addNote('this is also #test #second_chance');
-  actionDispatcher.addNote('this is note a test');
-  actionDispatcher.addNote('the quick brown fox jumps over the lazy #dog');
-  var tags = [];
-  _.times(20, function(){
-    actionDispatcher.addNote( sentenceWithTags(tags) );
-  });
+  window.setTimeout(function(){
+    actionDispatcher.addNote('this is a #test');
+    actionDispatcher.addNote('this is also #test #second_chance');
+    actionDispatcher.addNote('this is note a test');
+    actionDispatcher.addNote('the quick brown fox jumps over the lazy #dog');
+    var tags = [];
+    var randNote = function randNote(count){
+      if(count>0){
+        actionDispatcher.addNote( sentenceWithTags(tags) );
+        window.setTimeout(randNote,0,count-1);
+      }
+    };
+    randNote(20);
+  }, 1000);
+
+
 };
