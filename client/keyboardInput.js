@@ -29,7 +29,7 @@ export default function(actionDispatcher){
       actionDispatcher.moveFocus(direction);
     } else if( key === 'Enter' ){
       actionDispatcher.enterKey();
-    } else if( key === 'Tab' ){
+    } else if( key === 'Alt' ){
       actionDispatcher.toggleInputMode();
     }
 
