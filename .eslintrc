@@ -29,6 +29,7 @@
   "globals": {
     "$": true,
     "_": true,
+    "Set": true
   }
 
 }
