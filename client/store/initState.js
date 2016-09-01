@@ -17,8 +17,6 @@ export default {
     inputMode: '_ search',
     displayedNotes: []
   },
-  index: {
-    tags: {},
-    words: {}
-  }
+  words: {},
+  index: {}
 };
