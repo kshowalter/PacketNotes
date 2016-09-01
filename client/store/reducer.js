@@ -6,6 +6,45 @@ var tagMarkers = ['#','@'];
 
 var r = {};
 
+var indexWord = function indexWord(indexLevel, subString, word){
+  var letter = subString.slice(0,1);
+  var remains = subString.slice(1);
+
+  if( ! indexLevel[letter] ){
+    indexLevel[letter] = {
+      words: new Set(),
+      letters: {}
+    };
+  }
+
+  indexLevel[letter].words.add(word);
+
+  if( remains ){
+    indexWord(indexLevel[letter].letters, remains, word);
+  }
+
+};
+
+var getIndex = function getIndex(indexLevel, string){
+  var letter = string.slice(0,1);
+  var remains = string.slice(1);
+
+  if( indexLevel[letter] ){
+    if( remains.length ){
+      var nextLevelDown = getIndex(indexLevel[letter], remains);
+      if( nextLevelDown ){
+        return nextLevelDown;
+      } else {
+        return indexLevel[letter].words;
+      }
+    } else {
+      return indexLevel[letter].words;
+    }
+  } else {
+    return false;
+  }
+};
+
 r.addNote = function(state,action){
   var id = ++state.LastNoteId;
 
@@ -26,17 +65,21 @@ r.addNote = function(state,action){
         });
       }
     }
+
+    if( ! state.words[word] ){
+      state.words[word] = new Set();
+    }
+    state.words[word].add(newNote.id);
+    indexWord(state.index, newNote.text, newNote.id);
+
+  });
+
+
+  newNote.words.forEach(function(word){
   });
 
   //var words = [...state.words];
 
-  //newNote.words.forEach(function(word){
-  //  if( ! words[word] ){
-  //    words[word] = [id];
-  //  } else {
-  //    words[word].push(id);
-  //  }
-  //});
 
   state.notes = [...state.notes, newNote];
   //state.words = words;
@@ -53,6 +96,8 @@ var updateFilter = function(state,action){
       selectedTags.push(tagName);
     }
   }
+
+  var searchStrings = state.filter.searchString.split(' ');
 
   var searchWords = [].concat( selectedTags, state.filter.searchString.split(' ') );
 
@@ -159,8 +204,8 @@ var updateDisplayedNotes = function(state, action){
   if( state.filter.searchWords.length ){
     displayedNotes = [];
     state.notes.forEach(function(note,id){
-      var matches = _.intersection( note.words, state.filter.searchWords );
-      if( matches.length ){
+      // if all the searchWords are in note.words, then the intersection will contain all of the searchWords.
+      if( _.intersection( note.words, state.filter.searchWords ).length === state.filter.searchWords.length ){
         displayedNotes.push(id);
       }
     });
@@ -194,7 +239,19 @@ function reducer( existingState={}, action ){
     state = r[action.type](state,action);
 
   } else if(action.type=== 'enterKey' ){
-    console.log('Now what?');
+    if( state.ui.focus === 'searchInput' ){
+      var inputElement = document.getElementsByClassName('searchInput')[0];
+      var inputString = inputElement.value;
+      state = r.addNote(state,{
+        type: 'addNote',
+        text: inputString
+      });
+      state.filter.searchString = '';
+      state = updateFilter(state,action);
+      //inputElement.value = '';
+    } else {
+      console.log('Now what?');
+    }
 
   } else {
     console.log('I do not know how to: ', action);
