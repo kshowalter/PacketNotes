@@ -33,32 +33,19 @@ var getIndex = function getIndex(subIndex, string){
   var remains = string.slice(1);
 
   if( subIndex[letter] ){
-    console.log(subIndex[letter].letters);
     var x = getIndex(subIndex[letter].letters, remains);
-    console.log(x);
     if(!x){
       return subIndex[letter];
     } else {
       return x;
     }
-    //return subIndex[letter];
-    //if( remains.length ){
-    //  var nextLevelDown = getIndex(subIndex[letter], remains);
-    //  if( nextLevelDown ){
-    //    return nextLevelDown;
-    //  } else {
-    //    return subIndex[letter].words;
-    //  }
-    //} else {
-    //  return subIndex[letter].words;
-    //}
   } else {
     return false;
   }
 };
 
 r.addNote = function(state,action){
-  var id = ++state.LastNoteId;
+  var id = state.LastNoteId++;
 
   var newNote = {
     id: id,
