@@ -30,13 +30,10 @@ keyboardInput(actionDispatcher);
 //g.path = __dirname;
 var chance = new Chance('bean&owl');
 
-import Words from './info/wordlist';
-var words = Words();
 
 var sentenceWithTags = function(tags){
   var wordList = _.times( chance.integer({min:5, max:20}) , function(){
-    //var word = chance.word();
-    var word = chance.pickone(words.random);
+    var word = chance.word();
     var f = chance.floating({min:0,max:1});
     if( f <= 0.01 ){
       word = '#' + word;
@@ -90,9 +87,6 @@ window.onload = function(){
     }
   });
 
-  //window.setInterval(function(){
-  //  actionDispatcher.updateTime();
-  //}, 1000);
 
   window.setTimeout(function(){
     actionDispatcher.addNote('this is a #test');
