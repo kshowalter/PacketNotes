@@ -6,40 +6,52 @@ var tagMarkers = ['#','@'];
 
 var r = {};
 
-var indexWord = function indexWord(indexLevel, subString, word){
+var indexWord = function indexWord(subIndex, subString, word){
   var letter = subString.slice(0,1);
   var remains = subString.slice(1);
 
-  if( ! indexLevel[letter] ){
-    indexLevel[letter] = {
-      words: new Set(),
+  if( ! subIndex[letter] ){
+    subIndex[letter] = {
+      exact: new Set(),
+      partial: new Set(),
       letters: {}
     };
   }
 
-  indexLevel[letter].words.add(word);
 
   if( remains ){
-    indexWord(indexLevel[letter].letters, remains, word);
+    indexWord(subIndex[letter].letters, remains, word);
+    subIndex[letter].partial.add(word);
+  } else {
+    subIndex[letter].exact.add(word);
   }
 
 };
 
-var getIndex = function getIndex(indexLevel, string){
+var getIndex = function getIndex(subIndex, string){
   var letter = string.slice(0,1);
   var remains = string.slice(1);
 
-  if( indexLevel[letter] ){
-    if( remains.length ){
-      var nextLevelDown = getIndex(indexLevel[letter], remains);
-      if( nextLevelDown ){
-        return nextLevelDown;
-      } else {
-        return indexLevel[letter].words;
-      }
+  if( subIndex[letter] ){
+    console.log(subIndex[letter].letters);
+    var x = getIndex(subIndex[letter].letters, remains);
+    console.log(x);
+    if(!x){
+      return subIndex[letter];
     } else {
-      return indexLevel[letter].words;
+      return x;
     }
+    //return subIndex[letter];
+    //if( remains.length ){
+    //  var nextLevelDown = getIndex(subIndex[letter], remains);
+    //  if( nextLevelDown ){
+    //    return nextLevelDown;
+    //  } else {
+    //    return subIndex[letter].words;
+    //  }
+    //} else {
+    //  return subIndex[letter].words;
+    //}
   } else {
     return false;
   }
@@ -70,7 +82,8 @@ r.addNote = function(state,action){
       state.words[word] = new Set();
     }
     state.words[word].add(newNote.id);
-    indexWord(state.index, newNote.text, newNote.id);
+
+    indexWord(state.index, word, word);
 
   });
 
@@ -202,17 +215,46 @@ r.updateTime = function(state,action){
 var updateDisplayedNotes = function(state, action){
   var displayedNotes = [];
   if( state.filter.searchWords.length ){
-    displayedNotes = [];
-    state.notes.forEach(function(note,id){
-      // if all the searchWords are in note.words, then the intersection will contain all of the searchWords.
-      if( _.intersection( note.words, state.filter.searchWords ).length === state.filter.searchWords.length ){
-        displayedNotes.push(id);
-      }
+    //displayedNotes = {
+    //  exact: new Set(),
+    //  partial: new Set()
+    //};
+    var displayedNotesIds = new Set();
+
+    state.filter.searchWords.forEach(function(searchWord){
+      var searchResults = getIndex(state.index, searchWord);
+      searchResults.exact.forEach(function(fullWord){
+        state.words[fullWord].forEach(function(noteId){
+          if( ! displayedNotesIds.has(noteId) ){
+            displayedNotesIds.add(noteId);
+            displayedNotes.push({
+              noteId: noteId,
+              completeness: 'full'
+            });
+          }
+        });
+      });
+      searchResults.partial.forEach(function(partialWord){
+        state.words[partialWord].forEach(function(noteId){
+          if( ! displayedNotesIds.has(noteId) ){
+            displayedNotesIds.add(noteId);
+            displayedNotes.push({
+              noteId: noteId,
+              completeness: 'partial'
+            });
+          }
+        });
+      });
     });
+
   } else {
-    displayedNotes = _.keys(state.notes);
+    _.keys(state.notes).forEach(function(noteId){
+      displayedNotes.push({
+        noteId: noteId,
+        completeness: 'full'
+      });
+    });
   }
-  //state.ui.displayedNotes = displayedNotes;
   return displayedNotes;
 };
 

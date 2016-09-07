@@ -39,18 +39,26 @@ var TopBar = function(state, actionDispatcher){
 };
 
 
-var Note = function(note, actionDispatcher){
-  var notes = note.words.map(function(word,id){
-    if( note.tags.indexOf(word)+1 ){
+var Note = function(props){
+  var notes = props.note.words.map(function(word,id){
+    if( props.note.tags.indexOf(word)+1 ){
       return span({key:id},[
         a(word,'#', {
           onclick: function(e){
             console.log(e.target.innerHTML);
             //var actions = this.props.actions;
             var tag = e.target.innerHTML;
-            actionDispatcher.selectTag(tag);
+            props.actionDispatcher.selectTag(tag);
           }
         }),
+        ' '
+      ]);
+    } else if( props.searchWords.indexOf(word)+1 ){
+      return span({
+        key:id,
+        class: 'wordHighlight'
+      },[
+        word,
         ' '
       ]);
     } else {
@@ -62,16 +70,30 @@ var Note = function(note, actionDispatcher){
   });
 
   return (
-    div( {class: 'Note'}, notes )
+    div( {class: props.className}, notes )
   );
 };
 
 
 var Notes = function(state, actionDispatcher){
-  var notes = state.ui.displayedNotes.map(function(noteId,id){
-    var note = state.notes[noteId];
-    return Note(note, actionDispatcher);
+  var notes = state.ui.displayedNotes.map(function(noteMatch,id){
+    var note = state.notes[noteMatch.noteId];
+    console.log(noteMatch, note);
+    var className;
+    if( noteMatch.completeness === 'full' ){
+      className = 'Note';
+    } else  if( noteMatch.completeness === 'partial' ){
+      className = 'Note NotePartial';
+    }
+    return Note({
+      note: note,
+      className: className,
+      searchWords: state.filter.searchWords,
+      actionDispatcher: actionDispatcher
+    });
+
   });
+
   return div( {class:'Notes'}, notes);
 };
 
@@ -82,7 +104,6 @@ var AddNoteBar = function(state, actionDispatcher){
       type: 'text',
       value: state.filter.searchString,
       oninput: function(e){
-        console.log('@oninput', e.target.value);
         var searchString = e.target.value;
         actionDispatcher.updateSearchString(searchString);
       }

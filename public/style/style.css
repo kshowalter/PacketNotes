@@ -145,7 +145,13 @@ overflow: hidden;
   border: 1px solid blue;
 }
 
+.NotePartial {
+  background: #dadada;
+}
 
+.wordHighlight {
+  color: #00817d;
+}
 
 .AddNoteBar {
   padding: 2px;
