@@ -10,6 +10,7 @@ module.exports = {
   },
   //devtool: 'eval',
   //devtool: 'eval-source-map',
+  devtool: '#cheap-module-eval-source-map',
 
   plugins: [
     new webpack.DefinePlugin({
